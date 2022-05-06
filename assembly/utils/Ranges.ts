@@ -1,4 +1,4 @@
-import { Price } from "./types/Price";
+import { Price } from "./Price";
 import { getMax } from "./Math";
 
 export function getAverageTrueRange(prices: Array<Price>, interval: i32): f32 {

@@ -1,3 +1,10 @@
+## 1.0.0 (2022-07-14)
+
+
+### Features
+
+* :sparkles: More utilities ([0bda6dd](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/0bda6dd58f395f09b252365f677d397b87f04e80))
+
 ## 1.0.0-alpha.1 (2021-12-09)
 
 

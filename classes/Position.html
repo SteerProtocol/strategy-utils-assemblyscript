@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Price | @steerprotocol/strategy-utils</title>
+	<title>Position | @steerprotocol/strategy-utils</title>
 	<meta name="description" content="Documentation for @steerprotocol/strategy-utils">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -53,10 +53,10 @@
 					<a href="../modules.html">@steerprotocol/strategy-utils</a>
 				</li>
 				<li>
-					<a href="Price.html">Price</a>
+					<a href="Position.html">Position</a>
 				</li>
 			</ul>
-			<h1>Class Price</h1>
+			<h1>Class Position</h1>
 		</div>
 	</div>
 </header>
@@ -67,7 +67,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Price</span>
+						<span class="target">Position</span>
 					</li>
 				</ul>
 			</section>
@@ -78,16 +78,15 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="Price.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="Position.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="Price.html#close" class="tsd-kind-icon">close</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="Price.html#high" class="tsd-kind-icon">high</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="Price.html#low" class="tsd-kind-icon">low</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="Price.html#open" class="tsd-kind-icon">open</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="Position.html#endTick" class="tsd-kind-icon">end<wbr>Tick</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="Position.html#startTick" class="tsd-kind-icon">start<wbr>Tick</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="Position.html#weight" class="tsd-kind-icon">weight</a></li>
 							</ul>
 						</section>
 					</div>
@@ -99,31 +98,28 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Price<span class="tsd-signature-symbol">(</span>high<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, low<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, open<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, close<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Price.html" class="tsd-signature-type" data-tsd-kind="Class">Price</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Position<span class="tsd-signature-symbol">(</span>startTick<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, endTick<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, weight<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Position.html" class="tsd-signature-type" data-tsd-kind="Class">Position</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SteerProtocol/strategy-utils-assemblyscript/blob/0bda6dd/assembly/utils/types/Price.ts#L2">utils/types/Price.ts:2</a></li>
+									<li>Defined in <a href="https://github.com/SteerProtocol/strategy-utils-assemblyscript/blob/0bda6dd/assembly/utils/types/Position.ts#L3">utils/types/Position.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>high: <span class="tsd-signature-type">number</span></h5>
+									<h5>startTick: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>low: <span class="tsd-signature-type">number</span></h5>
+									<h5>endTick: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>open: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>close: <span class="tsd-signature-type">number</span></h5>
+									<h5>weight: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="Price.html" class="tsd-signature-type" data-tsd-kind="Class">Price</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="Position.html" class="tsd-signature-type" data-tsd-kind="Class">Position</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -131,30 +127,23 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="close" class="tsd-anchor"></a>
-					<h3>close</h3>
-					<div class="tsd-signature tsd-kind-icon">close<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="endTick" class="tsd-anchor"></a>
+					<h3>end<wbr>Tick</h3>
+					<div class="tsd-signature tsd-kind-icon">end<wbr>Tick<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="high" class="tsd-anchor"></a>
-					<h3>high</h3>
-					<div class="tsd-signature tsd-kind-icon">high<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="startTick" class="tsd-anchor"></a>
+					<h3>start<wbr>Tick</h3>
+					<div class="tsd-signature tsd-kind-icon">start<wbr>Tick<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="low" class="tsd-anchor"></a>
-					<h3>low</h3>
-					<div class="tsd-signature tsd-kind-icon">low<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="open" class="tsd-anchor"></a>
-					<h3>open</h3>
-					<div class="tsd-signature tsd-kind-icon">open<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="weight" class="tsd-anchor"></a>
+					<h3>weight</h3>
+					<div class="tsd-signature tsd-kind-icon">weight<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
@@ -173,33 +162,30 @@
 					<li class=" tsd-kind-class">
 						<a href="EMA.html" class="tsd-kind-icon">EMA</a>
 					</li>
-					<li class=" tsd-kind-class">
-						<a href="Position.html" class="tsd-kind-icon">Position</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="Price.html" class="tsd-kind-icon">Price</a>
+						<a href="Position.html" class="tsd-kind-icon">Position</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="Price.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="Position.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="Price.html#close" class="tsd-kind-icon">close</a>
+								<a href="Position.html#endTick" class="tsd-kind-icon">end<wbr>Tick</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="Price.html#high" class="tsd-kind-icon">high</a>
+								<a href="Position.html#startTick" class="tsd-kind-icon">start<wbr>Tick</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="Price.html#low" class="tsd-kind-icon">low</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="Price.html#open" class="tsd-kind-icon">open</a>
+								<a href="Position.html#weight" class="tsd-kind-icon">weight</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="Price.html" class="tsd-kind-icon">Price</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="SMA.html" class="tsd-kind-icon">SMA</a>
 					</li>

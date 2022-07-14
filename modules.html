@@ -63,6 +63,7 @@
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-class"><a href="classes/EMA.html" class="tsd-kind-icon">EMA</a></li>
+								<li class="tsd-kind-class"><a href="classes/Position.html" class="tsd-kind-icon">Position</a></li>
 								<li class="tsd-kind-class"><a href="classes/Price.html" class="tsd-kind-icon">Price</a></li>
 								<li class="tsd-kind-class"><a href="classes/SMA.html" class="tsd-kind-icon">SMA</a></li>
 							</ul>
@@ -70,8 +71,13 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-function"><a href="modules.html#_normalDensity" class="tsd-kind-icon">_normal<wbr>Density</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#getAverageTrueRange" class="tsd-kind-icon">get<wbr>Average<wbr>True<wbr>Range</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#getMax" class="tsd-kind-icon">get<wbr>Max</a></li>
+								<li class="tsd-kind-function"><a href="modules.html#getTickFromPrice" class="tsd-kind-icon">get<wbr>Tick<wbr>From<wbr>Price</a></li>
+								<li class="tsd-kind-function"><a href="modules.html#getTickSpacing" class="tsd-kind-icon">get<wbr>Tick<wbr>Spacing</a></li>
+								<li class="tsd-kind-function"><a href="modules.html#renderULMResult" class="tsd-kind-icon">renderULMResult</a></li>
+								<li class="tsd-kind-function"><a href="modules.html#trailingStop" class="tsd-kind-icon">trailing<wbr>Stop</a></li>
 							</ul>
 						</section>
 					</div>
@@ -79,6 +85,35 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="_normalDensity" class="tsd-anchor"></a>
+					<h3>_normal<wbr>Density</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">_normal<wbr>Density<span class="tsd-signature-symbol">(</span>std<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">f32</span>, mean<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">f32</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">f32</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">f32</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/SteerProtocol/strategy-utils-assemblyscript/blob/0bda6dd/assembly/utils/Math.ts#L11">utils/Math.ts:11</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>std: <span class="tsd-signature-type">f32</span></h5>
+								</li>
+								<li>
+									<h5>mean: <span class="tsd-signature-type">f32</span></h5>
+								</li>
+								<li>
+									<h5>x: <span class="tsd-signature-type">f32</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">f32</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="getAverageTrueRange" class="tsd-anchor"></a>
 					<h3>get<wbr>Average<wbr>True<wbr>Range</h3>
@@ -89,7 +124,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SteerProtocol/strategy-utils-assemblyscript/blob/dbb8c4e/assembly/utils/Ranges.ts#L4">utils/Ranges.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/SteerProtocol/strategy-utils-assemblyscript/blob/0bda6dd/assembly/utils/Ranges.ts#L4">utils/Ranges.ts:4</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -115,13 +150,108 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SteerProtocol/strategy-utils-assemblyscript/blob/dbb8c4e/assembly/utils/Math.ts#L1">utils/Math.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/SteerProtocol/strategy-utils-assemblyscript/blob/0bda6dd/assembly/utils/Math.ts#L1">utils/Math.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>arr: <span class="tsd-signature-type">f32</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">f32</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="getTickFromPrice" class="tsd-anchor"></a>
+					<h3>get<wbr>Tick<wbr>From<wbr>Price</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Tick<wbr>From<wbr>Price<span class="tsd-signature-symbol">(</span>price<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">f32</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">f32</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/SteerProtocol/strategy-utils-assemblyscript/blob/0bda6dd/assembly/utils/ULMhelpers.ts#L45">utils/ULMhelpers.ts:45</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>price: <span class="tsd-signature-type">f32</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">f32</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="getTickSpacing" class="tsd-anchor"></a>
+					<h3>get<wbr>Tick<wbr>Spacing</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Tick<wbr>Spacing<span class="tsd-signature-symbol">(</span>poolFee<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">i32</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">i32</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/SteerProtocol/strategy-utils-assemblyscript/blob/0bda6dd/assembly/utils/ULMhelpers.ts#L3">utils/ULMhelpers.ts:3</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>poolFee: <span class="tsd-signature-type">i32</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">i32</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="renderULMResult" class="tsd-anchor"></a>
+					<h3>renderULMResult</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">renderULMResult<span class="tsd-signature-symbol">(</span>positions<span class="tsd-signature-symbol">: </span><a href="classes/Position.html" class="tsd-signature-type" data-tsd-kind="Class">Position</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/SteerProtocol/strategy-utils-assemblyscript/blob/0bda6dd/assembly/utils/ULMhelpers.ts#L22">utils/ULMhelpers.ts:22</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>positions: <a href="classes/Position.html" class="tsd-signature-type" data-tsd-kind="Class">Position</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="trailingStop" class="tsd-anchor"></a>
+					<h3>trailing<wbr>Stop</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">trailing<wbr>Stop<span class="tsd-signature-symbol">(</span>percent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">f32</span>, prices<span class="tsd-signature-symbol">: </span><a href="classes/Price.html" class="tsd-signature-type" data-tsd-kind="Class">Price</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">f32</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/SteerProtocol/strategy-utils-assemblyscript/blob/0bda6dd/assembly/utils/Ranges.ts#L27">utils/Ranges.ts:27</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>percent: <span class="tsd-signature-type">f32</span></h5>
+								</li>
+								<li>
+									<h5>prices: <a href="classes/Price.html" class="tsd-signature-type" data-tsd-kind="Class">Price</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">f32</span></h4>
@@ -144,16 +274,34 @@
 						<a href="classes/EMA.html" class="tsd-kind-icon">EMA</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/Position.html" class="tsd-kind-icon">Position</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/Price.html" class="tsd-kind-icon">Price</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/SMA.html" class="tsd-kind-icon">SMA</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="modules.html#_normalDensity" class="tsd-kind-icon">_normal<wbr>Density</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="modules.html#getAverageTrueRange" class="tsd-kind-icon">get<wbr>Average<wbr>True<wbr>Range</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="modules.html#getMax" class="tsd-kind-icon">get<wbr>Max</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="modules.html#getTickFromPrice" class="tsd-kind-icon">get<wbr>Tick<wbr>From<wbr>Price</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="modules.html#getTickSpacing" class="tsd-kind-icon">get<wbr>Tick<wbr>Spacing</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="modules.html#renderULMResult" class="tsd-kind-icon">renderULMResult</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="modules.html#trailingStop" class="tsd-kind-icon">trailing<wbr>Stop</a>
 					</li>
 				</ul>
 			</nav>

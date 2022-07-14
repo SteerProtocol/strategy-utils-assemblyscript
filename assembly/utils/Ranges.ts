@@ -22,3 +22,15 @@ export function getAverageTrueRange(prices: Array<Price>, interval: i32): f32 {
     return f32(rangeSum) / f32(prices.length - 1);
 
   }
+
+
+  export   function trailingStop(percent: f32, prices: Price[]): f32 {
+    // Get the current price of the asset pair
+    const currentPrice = prices[prices.length - 1];
+
+    // Calculate the trailing stop price
+    const trailingStopPrice = currentPrice.close - (currentPrice.close * f32(percent / 100));
+
+    // Return the trailing stop price
+    return trailingStopPrice;
+}

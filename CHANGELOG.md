@@ -1,3 +1,10 @@
+### [1.1.1-beta.1](https://github.com/SteerProtocol/strategy-utils-assemblyscript/compare/v1.1.0...v1.1.1-beta.1) (2022-07-26)
+
+
+### Bug Fixes
+
+* **devops:** :bug: Fix tests ([a2bb4d6](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/a2bb4d6bdc5e3dc8bbcf6be6f26c74b8167675a7))
+
 ## [1.1.0](https://github.com/SteerProtocol/strategy-utils-assemblyscript/compare/v1.0.0...v1.1.0) (2022-07-26)
 
 

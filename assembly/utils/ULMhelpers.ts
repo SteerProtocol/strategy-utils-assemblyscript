@@ -34,7 +34,7 @@ export function renderULMResult(positions: Array<Position>): string {
 
     return `{"functionName":"tend(uint256,(int24[],int24[],uint16[]),bytes)",
     "typesArray":["uint256","tuple(int24[],int24[],uint16[])","bytes"],
-    "valuesArray":[1000, [[`+lowerTicks.toString() +'],['+upperTicks.toString()+'],['+ weights.toString() +`]], "0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff000000000000000000000000ffffffffffffffffffffffffffffffffffffffff"]
+    "valuesArray":[10000, [[`+lowerTicks.toString() +'],['+upperTicks.toString()+'],['+ weights.toString() +`]], "0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff000000000000000000000000ffffffffffffffffffffffffffffffffffffffff"]
     }`
     // The bytes value here is a placeholder for encoding that gets replaced with time-sensitive data upon execution. It will actually be the swap amount for rebalancing (int256) and slippage limit (uint160)
 }

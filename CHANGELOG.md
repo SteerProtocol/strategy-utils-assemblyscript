@@ -1,3 +1,15 @@
+## [1.1.0](https://github.com/SteerProtocol/strategy-utils-assemblyscript/compare/v1.0.0...v1.1.0) (2022-07-26)
+
+
+### Features
+
+* :sparkles: Additional Helper functions ([a783b06](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/a783b06c08ce11e50469c15e3f53224adf9710bb))
+
+
+### Bug Fixes
+
+* :bug: Hot Fix sync ([e635a70](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/e635a70951463271f227e996408d2bf4bb9c633d))
+
 ## 1.0.0 (2022-07-14)
 
 

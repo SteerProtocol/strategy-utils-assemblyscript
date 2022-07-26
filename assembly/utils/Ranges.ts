@@ -36,7 +36,7 @@ export function getAverageTrueRange(prices: Array<Price>, interval: i32): f32 {
 }
 
 export function trueRange(price: Price): f32{
-  const trueRange = getMax(price.high - price.low,getMax(Math.abs(price.high-price.close),Math.abs(price.low-price.close)));
+  const trueRange = getMax(price.high - price.low,getMax(f32(Math.abs(price.high-price.close)),f32(Math.abs(price.low-price.close))));
   return trueRange;
 }
 

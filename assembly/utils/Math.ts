@@ -29,15 +29,15 @@ export function _standardDeviation(list:f32[]): f32 {
   }
   const variance = _mean(sqrdDiff)
   const stddev = Math.sqrt(variance)
-  return stddev
+  return f32(stddev)
 }
 
 // SMA simple moving average
 export function _mean(list: f32[]): f32 {
   const length = list.length;
-  let total = 0;
+  let total: f32 = 0.0;
   for (let i = 0; i < length; i++){
       total += list[i]
   }
-  return total / length
+  return total / f32(length)
 }

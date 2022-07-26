@@ -1,4 +1,6 @@
 
+
+// WARNING: classes will initially be allocated 1 page of memory, you will likely need to add size or flatten these classes
 export class SMA {
   private readonly prices: f32[] = [];
   private interval: i32 = 0;

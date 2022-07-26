@@ -2,7 +2,7 @@ const fs = require("fs");
 import * as AsBind from "as-bind/dist/as-bind.cjs.js";
 
 const imports = {
-  Logger: { // File which you are injecting
+  console: { // File which you are injecting
     log(strPtr) {
       console.log(strPtr)
     }

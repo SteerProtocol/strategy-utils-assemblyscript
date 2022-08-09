@@ -9,8 +9,14 @@ export class Price {
   ) {}
 }
 
-export function parsePrices(_prices: String): Array<Price> {
-  const prices = _prices;
+/**
+ * 
+ * @param _data data connector data array
+ * @param _index index of where the candles are in the array
+ * @returns 
+ */
+export function parsePrices(_data: String, _index: i32): Array<Price> {
+  const prices = _data;
   // Parse an object using the JSON object
   let jsonObj: JSON.Obj = <JSON.Obj>JSON.parse(prices);
   const result: Array<Price> = [];
@@ -18,7 +24,7 @@ export function parsePrices(_prices: String): Array<Price> {
   const data_arr = <JSON.Arr>jsonObj.getArr("data");
   if (data_arr == null) {throw new Error()};
   // First and only data result for this strategy is the candles
-  const val = <JSON.Arr>data_arr._arr[0]
+  const val = <JSON.Arr>data_arr._arr[_index]
   if (val != null) {
       if (val.isArr) {
       const pricesArray = (<JSON.Arr>val).valueOf();

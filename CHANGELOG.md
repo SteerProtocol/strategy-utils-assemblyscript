@@ -1,3 +1,9 @@
+### [1.1.2-alpha.1](https://github.com/SteerProtocol/strategy-utils-assemblyscript/compare/v1.1.1...v1.1.2-alpha.1) (2022-08-15)
+
+
+### Bug Fixes
+
+* :ambulance: Specific Index for parse prices ([0940640](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/09406407c7cb12bca2585976f3269414d9be731b))
 
 ### [1.1.1-alpha.1](https://github.com/SteerProtocol/strategy-utils-assemblyscript/compare/v1.1.0...v1.1.1-alpha.1) (2022-07-26)
 

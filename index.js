@@ -9,6 +9,6 @@ const imports = {
   }
 };
 
-const asBindInstance = AsBind.instantiateSync(fs.readFileSync(__dirname + "/build/optimized.wasm"), imports)
+const asBindInstance = AsBind.instantiateSync(fs.readFileSync(__dirname + "/build/untouched.wasm"), imports)
 
 module.exports = asBindInstance.exports;

@@ -1,2 +1,2 @@
 export * from './Position';
-export * from './Price';
+export * from './Candle';

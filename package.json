@@ -1,6 +1,6 @@
 {
   "name": "@steerprotocol/strategy-utils",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Strategy utilities library for Steer Protocol strategies",
   "main": "assembly/index.ts",
   "types": "assembly/index.ts",

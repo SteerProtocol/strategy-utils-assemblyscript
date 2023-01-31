@@ -39,7 +39,7 @@ export function renderULMResult(
     "typesArray":["uint256","tuple(int24[],int24[],uint16[])","bytes"],
     "valuesArray":[` +
     totalLiquidity1e4.toString() +
-    `}, [[` +
+    `], [[` +
     lowerTicks.toString() +
     "],[" +
     upperTicks.toString() +
@@ -48,7 +48,7 @@ export function renderULMResult(
     `]], "0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff000000000000000000000000ffffffffffffffffffffffffffffffffffffffff"]
     }`
   );
-  // The bytes value here is a placeholder for encoding that gets replaced with time-sensitive data upon execution. It will actually be the swap amount for rebalancing (int256) and slippage limit (uint160)
+  // The bytes value here is a placeholder for encoding that gets replaced with time-sensitive data upon execution. It will actually be the swap amount for re-balancing (int256) and slippage limit (uint160)
 }
 
 // TODO: Might need to be rewritten for assets

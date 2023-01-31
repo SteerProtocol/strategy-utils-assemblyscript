@@ -39,7 +39,7 @@ export function renderULMResult(
     "typesArray":["uint256","tuple(int24[],int24[],uint16[])","bytes"],
     "valuesArray":[` +
     totalLiquidity1e4.toString() +
-    `], [[` +
+    `, [[` +
     lowerTicks.toString() +
     "],[" +
     upperTicks.toString() +

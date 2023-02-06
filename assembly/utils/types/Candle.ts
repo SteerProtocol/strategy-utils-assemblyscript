@@ -1,4 +1,4 @@
-import * as JSON from '@serial-as/json'
+import { JSON } from 'json-as/assembly';
 
 @serializable
 export class Candle{

@@ -1,19 +1,21 @@
 import { JSON } from 'json-as/assembly';
 
 @serializable
-export class Candle{
+export class Candle {
   timestamp: i64 = 0; 
   high: number = 0.0; 
   low: number  = 0.0;
   open: number = 0.0;
   close: number = 0.0;
+  volume: number = 0.0;
 
-  constructor(timestamp: i64, high: number, low: number, open: number, close: number) {
+  constructor(timestamp: i64, high: number, low: number, open: number, close: number, volume: number) {
     this.timestamp = timestamp;
     this.high = high;
     this.low = low;
     this.open = open;
     this.close = close;
+    this.volume = volume;
   }
 
   toString(): string {

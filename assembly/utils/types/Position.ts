@@ -1,3 +1,6 @@
+import { JSON } from 'json-as/assembly';
+
+@serializable
 export class Position 
 {
     constructor(

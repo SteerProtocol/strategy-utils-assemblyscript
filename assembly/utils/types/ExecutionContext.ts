@@ -6,4 +6,6 @@ export class ExecutionContext {
   epochLength: number = 0;
   epochTimestamp: i32 = 0;
   vaultAddress: string = "";
+  blockTime: i32 = 0;
+  blockNumber: i32 = 0;
 }

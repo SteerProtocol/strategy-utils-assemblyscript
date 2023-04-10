@@ -3,13 +3,13 @@ import { JSON } from 'json-as/assembly';
 @serializable
 export class Candle {
   timestamp: i64 = 0; 
-  high: number = 0.0; 
-  low: number  = 0.0;
-  open: number = 0.0;
-  close: number = 0.0;
-  volume: number = 0.0;
+  high: f64 = 0.0; 
+  low: f64  = 0.0;
+  open: f64 = 0.0;
+  close: f64 = 0.0;
+  volume: f64 = 0.0;
 
-  constructor(timestamp: i64, high: number, low: number, open: number, close: number, volume: number) {
+  constructor(timestamp: i64, high: f64, low: f64, open: f64, close: f64, volume: f64) {
     this.timestamp = timestamp;
     this.high = high;
     this.low = low;

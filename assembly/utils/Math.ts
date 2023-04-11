@@ -41,3 +41,8 @@ export function _mean(list: f64[]): f64 {
   }
   return total / f64(length)
 }
+
+export function closestDivisibleNumber(num: number, divisor: number, floor: boolean): number {
+  if (floor) return Math.floor(num / divisor) * divisor;
+  return Math.ceil(num / divisor) * divisor;
+}

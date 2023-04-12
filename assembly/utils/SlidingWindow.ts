@@ -52,4 +52,8 @@ export class SlidingWindow<T> {
         let window = this.getWindow();
         return this.formula(window);
     }
+
+    isStable(): bool {
+        return this.data.length >= this.windowSize;
+    }
 }

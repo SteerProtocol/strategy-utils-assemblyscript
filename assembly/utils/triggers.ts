@@ -3,7 +3,7 @@ import { Position } from "./types";
 // NOTE: Trigger functions return true when action should be taken, if false then the strategy can return 'continue' to skip exeuction
 
 // Gets active range from the output of LM.getPositions()
-export function parsePositions(_positions: string): Position {
+export function parseActiveRange(_positions: string): Position {
     // _positions will be '[[#,#,#],[#,#,#],[#,#,#]]' presumably. lower, upper, weight
     // clean up our list by removing spaces and brackets
     let positions = _positions.replaceAll(' ','');

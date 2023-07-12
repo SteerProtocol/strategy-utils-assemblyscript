@@ -2,9 +2,9 @@
 
 ## Triggers.ts
 
-Trigger logic is created and implemented with the expectation to reduce the number of unnecessary executions. If the state of a liquidity providing vault is acceptable, such trigger logic can be used to determine if action should be taken or not. This reduces gas costs and unnecessary on-chain executions. The trigger functions are designed to return `true` in the event action should be taken (the trigger condition is met). In the case of `false` the condition is satisfactory and the user can factor in their own logic or return `continue` to skip execution.
+Trigger logic is created and implemented with the expectation to reduce the number of unnecessary executions. If the state of a liquidity providing vault is acceptable, such trigger logic can be used to determine if action should be taken or not. This reduces gas costs and unnecessary on-chain executions. The trigger functions are designed to return `true` in the event action should be taken (the trigger condition is met). In the case of `false` the condition is satisfactory and the user can factor in their own logic or return `continue` to skip execution. If the trigger depends on some information set by the user like triggering only when the price is over a ceratin percentage from the current active range (see triggerFromPercentage), variables such as the percentage should be added to the strategy configuration.
 
-#### Example
+### Example
 
 Imagine we will have a SushiLiquidityManager that will have a very broad liquidity coverage that we wish to only execute when our positions are out of range from the current tick. To do this we can utilize `triggerPositionsInactive` to check for this condition. In order to use many of the trigger functions, we will need the current positions provided by the `Liquidity Manager Positions` data connector. Additionally, we will need the current tick provided by a `V3 Pool Current Tick` data connector. These will need to be configured at the creation of the vault. In our strategy's execute function, the resulting current positions and current tick will be passed in as parameters in the configured order. Armed with this data, we can use the trigger function and return continue if the execution logic is untriggered.
 

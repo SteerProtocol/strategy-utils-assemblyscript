@@ -1,3 +1,7 @@
+const PI_F32 = f32(Math.PI);
+const E_F32 = f32(Math.E);
+const TWO_PI_SQRT_F32 = f32(Math.sqrt(2 * PI_F32));
+
 export function _getMax(arr: Array<f32>): f32 {
     let max = arr[0];
     for (let i = 1; i < arr.length; i++) {
@@ -15,10 +19,7 @@ export function _getMax(arr: Array<f32>): f32 {
 
 
 export function _normalDensity(std: f32, mean: f32, x: f32): f32 {
-  return f32(
-    (f32(Math.E) ** (((x - mean) / std) ** 2 / -2) / std) *
-      Math.sqrt(2 * f32(Math.PI))
-  );
+  return (E_F32 ** (((x - mean) / std) ** 2 / -2) / std) * TWO_PI_SQRT_F32;
 }
 
 export function _standardDeviation(list:f32[]): f32 {

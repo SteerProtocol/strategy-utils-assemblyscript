@@ -24,7 +24,7 @@ export function _normalDensity(std: f32, mean: f32, x: f32): f32 {
 
 export function _standardDeviation(list:f32[]): f32 {
   const mean = _mean(list)
-  const sqrdDiff: f32[] = []
+  const sqrdDiff = new Array<f32>(list.length);
   for (let i = 0; i < list.length; i++){
       sqrdDiff.push((list[i]-mean)*(list[i]-mean))
   }

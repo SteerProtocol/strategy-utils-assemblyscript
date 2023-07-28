@@ -1,4 +1,4 @@
-import {  candles } from "./utils";
+import {  candles, candles2 } from "./utils";
 import fs from 'fs';
 import { WasmModule, loadWasm } from "@steerprotocol/app-loader";
 
@@ -207,19 +207,20 @@ describe("Unit tests", () => {
             "elapsedTendTime": 604800,
             "triggerStyle": "Price moves one way past positions",
             "triggerWhenOver": true,
-            "strategy": "Classic",
+            "strategy": "Bollinger Band",
             "liquidityShape": "Linear",
             "poolFee": 500,
             "placementType": "Position over current price",
             "triggerWhenOver": true,
-            "positionSize": 100
+            "lookback": 12,
+            "standardDeviations": 3
           }`
           myModule.initialize(config);
           const positions = '[[257100],[257300],[1]]'
           const currentTick = '257301'
           const timeSinceLastExecution = '5600'
           const result = myModule["execute(param_1: string, param_2: string, param_3: string, param_4: string)"]
-          (JSON.stringify(candles), positions, currentTick, timeSinceLastExecution);
+          (JSON.stringify([...candles2]), positions, currentTick, timeSinceLastExecution);
           expect(result).not.toEqual('continue')
         });
     });

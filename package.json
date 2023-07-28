@@ -13,7 +13,8 @@
     "docs": "typedoc --tsconfig ./tsconfig.json",
     "strategy": "yarn asbuild && yarn test",
     "semantic-release": "semantic-release",
-    "commit": "cz"
+    "commit": "cz",
+    "postinstall": "patch-package"
   },
   "author": "Derek Barrera <derekbarrera@gmail.com>",
   "license": "ISC",

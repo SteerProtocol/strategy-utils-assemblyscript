@@ -1,4 +1,5 @@
 export declare function generateCandles(data: string, candleSize: string): string;
+@external("env", "ccxt_fetchOHLCV")
 declare function _ccxt_fetchOHLCV(exchangeId: string, symbol: string, timeframe: string, limit: number, since: number): f64[][];
 
 // Required for asyncify

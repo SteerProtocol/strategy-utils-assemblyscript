@@ -1,13 +1,14 @@
 export declare function generateCandles(data: string, candleSize: string): string;
 @external("env", "ccxt_fetchOHLCV")
-declare function _ccxt_fetchOHLCV(exchangeId: string, symbol: string, timeframe: string, limit: number, since: number): Array<StaticArray<f64>>;
+declare function _ccxt_fetchOHLCV(exchangeId: string, symbol: string, timeframe: string, limit: number, since: number): StaticArray<StaticArray<f64>>;
 
 // Required for asyncify
 // @ts-ignore: Global should exist here
 @global let __ASYNCIFY_INITIALIZED = false;
+@external("env", "_initAsyncify")
 declare function _initAsyncify(asyncify_data_ptr: usize, stack_pointer: usize): void;
 
-export function ccxt_fetchOHLCV(exchangeId: string, symbol: string, timeframe: string, limit: number, since: number): Array<StaticArray<f64>> {
+export function ccxt_fetchOHLCV(exchangeId: string, symbol: string, timeframe: string, limit: number, since: number): StaticArray<StaticArray<f64>> {
     if (!__ASYNCIFY_INITIALIZED) {
         // We need to initialize space for Asyncify to work.
         // Asyncify will create a full - duplex communication channel through this bit of memory.

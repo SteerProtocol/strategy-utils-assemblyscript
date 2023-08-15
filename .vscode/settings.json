@@ -1,8 +1,0 @@
-{
-    "conventionalCommits.scopes": [
-        "interface",
-        "devops",
-        "Fixed EMA"
-    ],
-    "jest.jestCommandLine": "yarn test"
-}

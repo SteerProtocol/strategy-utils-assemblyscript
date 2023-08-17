@@ -1,5 +1,5 @@
-import { Position } from "@steerprotocol/strategy-utils/assembly";
 import { JSON } from "json-as";
+import { Position } from "./types";
 
 // NOTE: Trigger functions return true when action should be taken, if false then the strategy can return 'continue' to skip exeuction
 // Implementation might look like the following:

@@ -1,3 +1,17 @@
+## [1.2.0-alpha.2](https://github.com/SteerProtocol/strategy-utils-assemblyscript/compare/v1.2.0-alpha.1...v1.2.0-alpha.2) (2023-08-17)
+
+
+### Features
+
+* :sparkles: Trigger Logic Utils ([dc1058c](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/dc1058c48db7b7f1ae6ad9de321a49023859cd1e))
+* :zap: Latest spec for bundle interfacing ([c7287a5](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/c7287a5ef5510d67b9ec884d3529fc1bda14ac3d))
+* :zap: Trigger logic and tests ([5105832](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/510583295e2f9b94d0091ff9944daf6c84eb9196))
+
+
+### Bug Fixes
+
+* :white_check_mark: Fix tests ([2944e90](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/2944e90dbf4e532c934dcef325ff023e863fcef7))
+
 ## [1.2.0-alpha.1](https://github.com/SteerProtocol/strategy-utils-assemblyscript/compare/v1.1.2-alpha.1...v1.2.0-alpha.1) (2023-08-15)
 
 

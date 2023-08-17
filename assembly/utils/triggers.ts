@@ -61,8 +61,10 @@ export function triggerFromPercentage(currentPosition: Position, rebalancePercen
 
 // when current tick is no longer in the current position range
 export function triggerPositionsInactive(currentPosition: Position, currentTick: i64): boolean {
+  // return JSON.stringify(currentPosition)
     if (emptyCurrentPosition(currentPosition)) return true
-    return !((currentTick <= currentPosition.endTick && currentTick >= currentPosition.startTick))
+
+    return (!((currentTick <= currentPosition.endTick && currentTick >= currentPosition.startTick)))
 }
 
 // when tick goes over or under specified tick, trigger rebalance
@@ -140,6 +142,8 @@ export const enum TriggerStyle {
 //     requiredDataTypes: string[] = ['Liquidity Manager Positions', 'V3 Pool Current Tick'];
 // }
 
+// @ts-ignore
+@json
 export class TriggerConfigHelper {
     // triggerType: string = "Price leaves active range";
     triggerWhenOver: boolean = false;
@@ -148,12 +152,49 @@ export class TriggerConfigHelper {
     tickDistanceFromCenter: i64 = 0;
     elapsedTendTime: i64 = 0;
     constructor( t: boolean, tpt: i64, poptrr:f64, tdfc: i64, ett: i64) {
-      this.triggerWhenOver = t
-      this.tickPriceTrigger = tpt
-      this.percentageOfPositionRangeToTrigger = poptrr
-      this.tickDistanceFromCenter = tdfc
-      this.elapsedTendTime = ett
+      if(t) this.triggerWhenOver = t
+      if(tpt) this.tickPriceTrigger = tpt
+      if(poptrr) this.percentageOfPositionRangeToTrigger = poptrr
+      if(tdfc) this.tickDistanceFromCenter = tdfc
+      if(ett) this.elapsedTendTime = ett
     }
+}
+
+export function getTriggerExpectedDataTypes(triggerStyle: TriggerStyle): string[] {
+  // currently we use only this list
+  const typicalTypes = ["Liquidity Manager Positions", "V3 Pool Current Tick", "Time Since Last Execution"]
+    switch (triggerStyle) {
+        case TriggerStyle.DistanceFromCenterOfPositions:
+            return typicalTypes;
+        case TriggerStyle.PercentageChangeFromPositionRange:
+          return typicalTypes;
+        case TriggerStyle.PositionsInactive:
+          return typicalTypes;
+        // case TriggerStyle.SpecificPrice:
+        //     return "Specific Price";
+        case TriggerStyle.PricePastPositions:
+          return typicalTypes;
+        case TriggerStyle.None:
+          // return no data connectors for none
+          return [];
+
+    default:
+        throw new Error(`Unknown trigger style: ${triggerStyle}`);
+    }
+}
+
+
+export function getExpectedDataTypes(strategyDataConnectors: string[], triggerStyle: string): string {
+  const style = getTriggerStyle(triggerStyle)
+  const triggerDatas = getTriggerExpectedDataTypes(style)
+  const dataList = strategyDataConnectors.concat(triggerDatas)
+  let completeList = '['
+  for (let i: i32 = 0; i < dataList.length; i++) {
+    completeList += (' \"' + dataList[i] + '\"')
+    if (i != dataList.length-1) completeList += ','
+  }
+  completeList += ']'
+  return completeList
 }
 
 // no AS func overloading yet :(
@@ -171,43 +212,56 @@ export class TriggerConfigHelper {
 //     }
 // }
 
-export function shouldTriggerExecution(triggerStyle: TriggerStyle, triggerOptions: TriggerConfigHelper, dataConnector1: string, dataConnector2: string, dataConnector3: string) : boolean {
+// currently implemented as :: ulm positions [0], current tick [1], time since last execution [2]
+// as more types are added this logic path with be redone
+export function shouldTriggerExecution(
+  _triggerStyle: string, 
+  triggerOptions: TriggerConfigHelper, 
+  dataConnector1: string, 
+  dataConnector2: string, 
+  dataConnector3: string) : boolean {
 
     // possible dc inputs
     let currentPositionRange: Position;
     let currentTick: i64;
+    const triggerStyle = getTriggerStyle(_triggerStyle)
 
-    // auto trigger if we are overdue
-    const timeSinceLastExecution = i64(parseInt(dataConnector3))
-    if (timeSinceLastExecution >= i64(triggerOptions.elapsedTendTime)) return true
+
+
+    let timeSinceLastExecution: i64;
 
     switch (triggerStyle) {
         case TriggerStyle.DistanceFromCenterOfPositions:
             // parse ulm positions [0], current tick [1]
+                  // @ts-ignore
+            timeSinceLastExecution = i64(parseInt(dataConnector3))
+            if (timeSinceLastExecution >= i64(triggerOptions.elapsedTendTime)) return true
             currentPositionRange = parseActiveRange(dataConnector1)
             currentTick = i64(parseInt(dataConnector2))
-            if (!currentTick) return true
             return triggerFromDistance(currentPositionRange, triggerOptions.tickDistanceFromCenter, currentTick)
 
         case TriggerStyle.PercentageChangeFromPositionRange:
             // parse ulm positions [0], current tick [1]
+            timeSinceLastExecution = i64(parseInt(dataConnector3))
+            if (timeSinceLastExecution >= i64(triggerOptions.elapsedTendTime)) return true
             currentPositionRange= parseActiveRange(dataConnector1)
             currentTick = i64(parseInt(dataConnector2))
-            if (!currentTick) return true
             return triggerFromPercentage(currentPositionRange, triggerOptions.percentageOfPositionRangeToTrigger, currentTick)
 
         case TriggerStyle.PositionsInactive:
             // parse ulm positions [0], current tick [1]
+            timeSinceLastExecution = i64(parseInt(dataConnector3))
+            if (timeSinceLastExecution >= i64(triggerOptions.elapsedTendTime)) return true
             currentPositionRange = parseActiveRange(dataConnector1)
             currentTick = i64(parseInt(dataConnector2))
-            if (!currentTick) return true
             return triggerPositionsInactive(currentPositionRange, currentTick)
 
         case TriggerStyle.PricePastPositions:
             // parse ulm positions [0], current tick [1]
+            timeSinceLastExecution = i64(parseInt(dataConnector3))
+            if (timeSinceLastExecution >= i64(triggerOptions.elapsedTendTime)) return true
             currentPositionRange = parseActiveRange(dataConnector1)
             currentTick = i64(parseInt(dataConnector2))
-            if (!currentTick) return true
             return triggerPricePastPositions(currentPositionRange, currentTick,  triggerOptions.triggerWhenOver)
         default:
             return true
@@ -259,11 +313,7 @@ export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
       'Price moves one way past positions',
       'None'
     ];
-    // for(let trigger = 0; trigger < triggerList.length; trigger++){
-    //   if (!omit.includes(  triggerList[trigger])) {
-    //     filteredTriggers.push(getTriggerName(triggerList[trigger]));
-    //   }
-    // }
+
 
     return `"triggerStyle": {
       "enum": ${JSON.stringify(filteredTriggers)},
@@ -273,7 +323,7 @@ export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
     }`;
   }
 
-  export function allOfTrigger(): string {
+  export function allOfTrigger(strategyDataConnectors: string[]): string {
     return `{
     "if": {
       "properties": {
@@ -283,8 +333,15 @@ export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
       }
     },
     "then": {
-      "properties": {},
-      "required": []
+      "properties": {
+        "expectedDataTypes": {
+          "const": ${getExpectedDataTypes(strategyDataConnectors, "None")},
+          "default": ${getExpectedDataTypes(strategyDataConnectors, "None")},
+          "hidden": true,
+          "type": "string"
+        }
+      },
+      "required": ["expectedDataTypes"]
     }
   },
   {
@@ -302,9 +359,21 @@ export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
             "title": "Tick Distance",
             "description": "The number of ticks (basis points) from center price of positions to trigger setting new positions",
             "detailedDescription": "The static number of ticks from the center of the active range to trigger: if our position goes from 0-100, and we have a tick distance of 75, we will go out 75 ticks both ways from the center of our positions (50). This means we will skip execution only if the current tick is between -25 and 125. Future positions will determine where the center of the trigger range is located."
+        },
+        "expectedDataTypes": {
+          "const": ${getExpectedDataTypes(strategyDataConnectors, "Current Price set distance from center of positions")},
+          "default": ${getExpectedDataTypes(strategyDataConnectors, "Current Price set distance from center of positions")},
+          "hidden": true,
+          "type": "string"
+        },
+        "elapsedTendTime": {
+          "type": "number",
+          "title": "Max time between tends",
+          "description": "If trigger conditions have not been met for this period of time, the strategy will execute regardless of trigger logic to update vault accounting.",
+          "default": 1209600
         }
       },
-      "required": ["tickDistanceFromCenter"]
+      "required": ["tickDistanceFromCenter", "expectedDataTypes", "elapsedTendTime"]
     }
   },
   {
@@ -316,8 +385,21 @@ export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
       }
     },
     "then": {
-      "properties": {},
-      "required": []
+      "properties": {
+        "expectedDataTypes": {
+          "const": ${getExpectedDataTypes(strategyDataConnectors, "Price leaves active range")},
+          "default": ${getExpectedDataTypes(strategyDataConnectors, "Price leaves active range")},
+          "hidden": true,
+          "type": "string"
+        },
+        "elapsedTendTime": {
+          "type": "number",
+          "title": "Max time between tends",
+          "description": "If trigger conditions have not been met for this period of time, the strategy will execute regardless of trigger logic to update vault accounting.",
+          "default": 1209600
+        }
+      },
+      "required": ["expectedDataTypes", "elapsedTendTime"]
     }
   },
   {
@@ -335,9 +417,21 @@ export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
             "title": "Percentage of Range",
             "description": "The percentage of the range away to trigger new positions, 100% or 1 would be at the bounds of the range",
             "detailedDescription": "If you have a simple position ranging from ticks 0 - 100, and you set this value to 1, the trigger range will be the outer bounds. Using 0.5 would make the trigger range 25-75, 2 would make the range -50 - 150."
+        },
+        "expectedDataTypes": {
+          "const": ${getExpectedDataTypes(strategyDataConnectors, "Price moves percentage of active range away")},
+          "default": ${getExpectedDataTypes(strategyDataConnectors, "Price moves percentage of active range away")},
+          "hidden": true,
+          "type": "string"
+        },
+        "elapsedTendTime": {
+          "type": "number",
+          "title": "Max time between tends",
+          "description": "If trigger conditions have not been met for this period of time, the strategy will execute regardless of trigger logic to update vault accounting.",
+          "default": 1209600
         }
       },
-      "required": ["percentageOfPositionRangeToTrigger"]
+      "required": ["percentageOfPositionRangeToTrigger", "expectedDataTypes", "elapsedTendTime"]
     }
   },
   {
@@ -355,9 +449,21 @@ export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
             "title": "Price Moves Higher",
             "description": "True for if the strategy should set new positions when the price (tick) is higher than the current positions, false for lower",
             "detailedDescription": "If our current position ranges from ticks 0 - 100, true will make our bundle execute only when the current tick is higher. Any other case (current tick less than 100) will result in a continue recommendation."
+        },
+        "expectedDataTypes": {
+          "const": ${getExpectedDataTypes(strategyDataConnectors, "Price moves one way past positions")},
+          "default": ${getExpectedDataTypes(strategyDataConnectors, "Price moves one way past positions")},
+          "hidden": true,
+          "type": "string"
+        },
+        "elapsedTendTime": {
+          "type": "number",
+          "title": "Max time between tends",
+          "description": "If trigger conditions have not been met for this period of time, the strategy will execute regardless of trigger logic to update vault accounting.",
+          "default": 1209600
         }
       },
-      "required": ["triggerWhenOver"]
+      "required": ["triggerWhenOver", "expectedDataTypes", "elapsedTendTime"]
     }
   }`;
 }

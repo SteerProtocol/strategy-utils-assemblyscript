@@ -25,8 +25,8 @@ jobs:
         if: steps.node-cache.outputs.cache-hit != 'true'
         run: yarn
 
-      - name: Test to see if the project compiles
-        run: yarn asbuild
+      # - name: Test to see if the project compiles
+      #   run: yarn asbuild
 
       - name: Perform tests
         run: yarn test

@@ -1,7 +1,7 @@
 import { Candle } from "./types/Candle";
 import { getMax, _mean, _getMax } from "./Math";
 
-export function getAverageTrueRange(candles: Array<Candle>, interval: i32): f64 {
+export function getAverageTrueRange(candles: Array<Candle>): f64 {
     let rangeSum: f64 = 0;
     for (let i = 1; i < candles.length; i++) {
       const currentPrice = candles[i];

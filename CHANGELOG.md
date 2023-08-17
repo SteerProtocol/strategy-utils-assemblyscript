@@ -1,3 +1,17 @@
+## [1.2.0-alpha.1](https://github.com/SteerProtocol/strategy-utils-assemblyscript/compare/v1.1.2-alpha.1...v1.2.0-alpha.1) (2023-08-15)
+
+
+### Features
+
+* :zap: f32 -> f64 conversion ([19c98cb](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/19c98cb82dab0057cec790de29188c20bab09f76))
+* asyncify support ([45234ab](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/45234ab5edfc389580f09392e9b5c47ff2cbc1dc))
+* Integrate ccxt into strategy-utils ([bbc67b5](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/bbc67b52462163581e020b7576cc5b176102952b))
+
+
+### Bug Fixes
+
+* array GC issues ([15a3a36](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/15a3a36b2779ac64341867ac4d8eabe6748bd55d))
+
 ### [1.1.2-alpha.1](https://github.com/SteerProtocol/strategy-utils-assemblyscript/compare/v1.1.1...v1.1.2-alpha.1) (2022-08-15)
 
 

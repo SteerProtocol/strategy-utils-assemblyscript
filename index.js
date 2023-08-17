@@ -1,4 +1,3 @@
-// @todo determine if testing suite provides any benefits
 // const fs = require("fs");
 // import * as AsBind from "as-bind/dist/as-bind.cjs.js";
 

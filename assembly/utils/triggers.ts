@@ -1,6 +1,6 @@
 import { JSON } from "json-as";
+// import { Position } from "@steerprotocol/strategy-utils/assembly";
 import { Position } from "./types";
-// import { Position } from "./types";
 
 // NOTE: Trigger functions return true when action should be taken, if false then the strategy can return 'continue' to skip exeuction
 // Implementation might look like the following:
@@ -270,63 +270,79 @@ function getTriggerName(trigger: TriggerStyle): string {
   }
 }
 
-  function expectedDataTypesHelper(strategyDataConnectors: string[], triggerStyle: string): string {
+  function expectedDataTypesHelper(strategyDataConnectors: string[], triggerStyle: string): string[] {
     // const style = getTriggerStyle(triggerStyle)
-    const fullDataTypes = strategyDataConnectors.concat(getTriggerExpectedDataTypes(triggerStyle))
-    return `"expectedDataTypes": {
-      "hidden": true,
-      "type": "string",
-      "default": "${(fullDataTypes).toString()}",
-      "const": "${(fullDataTypes).toString()}"
-    },
-    "required": ["expectedDataTypes"]`
+    return strategyDataConnectors.concat(getTriggerExpectedDataTypes(triggerStyle))
+    // return `"expectedDataTypes": {
+    //   "hidden": true,
+    //   "type": "string",
+    //   "default": "${(fullDataTypes).toString()}",
+    //   "const": "${(fullDataTypes).toString()}"
+    // }`
   }
 
-export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
-    const triggerList = [
-        TriggerStyle.DistanceFromCenterOfPositions,
-        TriggerStyle.None,
-        TriggerStyle.PercentageChangeFromPositionRange,
-        TriggerStyle.PositionsInactive,
-        TriggerStyle.PricePastPositions,
+  @serializable
+  export class TriggerInfo {
+    name: string = '';
+    expectedDataTypes: string[] = [];
+    constructor (_name: string, _expectedDataTypes: string[]) {
+      this.name = _name
+      this.expectedDataTypes = _expectedDataTypes
+    }
+  }
+
+export function triggerPropertyHelper(strategyDataTypes: string[], omit: TriggerStyle[] = []): string {
+    // const triggerList = [
+    //     TriggerStyle.DistanceFromCenterOfPositions,
+    //     TriggerStyle.None,
+    //     TriggerStyle.PercentageChangeFromPositionRange,
+    //     TriggerStyle.PositionsInactive,
+    //     TriggerStyle.PricePastPositions,
+    // ];
+
+    const triggersObjects: TriggerInfo[] = [
+      new TriggerInfo('Current Price set distance from center of positions', expectedDataTypesHelper(strategyDataTypes, 'Current Price set distance from center of positions')),
+      new TriggerInfo('Price leaves active range', expectedDataTypesHelper(strategyDataTypes, 'Price leaves active range')),
+      new TriggerInfo('Price moves percentage of active range away', expectedDataTypesHelper(strategyDataTypes, 'Price moves percentage of active range away')),
+      new TriggerInfo('Price moves one way past positions', expectedDataTypesHelper(strategyDataTypes, 'Price moves one way past positions')),
+      new TriggerInfo('None', expectedDataTypesHelper(strategyDataTypes, 'None')),
     ];
 
-    const filteredTriggers: string[] = [
+    const triggerStrings = [
       'Current Price set distance from center of positions',
       'Price leaves active range',
       'Price moves percentage of active range away',
       'Price moves one way past positions',
       'None'
-    ];
-
+    ]
 
     return `"triggerStyle": {
-      "enum": ${JSON.stringify(filteredTriggers)},
+      "enumNames": ${JSON.stringify(triggerStrings)},
+      "enum": ${JSON.stringify(triggersObjects)},
       "title": "Logic to trigger new positions",
       "type": "string",
-      "default": "None"
+      "default": ${JSON.stringify(new TriggerInfo('None', expectedDataTypesHelper(strategyDataTypes, 'None')))}
     }`;
   }
 
-  export function allOfTrigger(strategyDataConnectors: string[]): string {
+  export function allOfTrigger(strategyDataTypes: string[]): string {
     return `{
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": "None"
+          "const": ${JSON.stringify(new TriggerInfo('None', expectedDataTypesHelper(strategyDataTypes, 'None')))}
         }
       }
     },
     "then": {
-
-      ${expectedDataTypesHelper(strategyDataConnectors, "Current Price set distance from center of positions")},
+      "required": []
     }
   },
   {
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": "Current Price set distance from center of positions"
+          "const": ${JSON.stringify(new TriggerInfo('Current Price set distance from center of positions', expectedDataTypesHelper(strategyDataTypes, 'Current Price set distance from center of positions')))}
         }
       }
     },
@@ -338,7 +354,6 @@ export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
             "description": "The number of ticks (basis points) from center price of positions to trigger setting new positions",
             "detailedDescription": "The static number of ticks from the center of the active range to trigger: if our position goes from 0-100, and we have a tick distance of 75, we will go out 75 ticks both ways from the center of our positions (50). This means we will skip execution only if the current tick is between -25 and 125. Future positions will determine where the center of the trigger range is located."
         },
-        ${expectedDataTypesHelper(strategyDataConnectors, "Current Price set distance from center of positions")},
         "elapsedTendTime": {
           "type": "number",
           "title": "Max time between tends",
@@ -353,14 +368,12 @@ export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": "Price leaves active range"
+          "const": ${JSON.stringify(new TriggerInfo('Price leaves active range', expectedDataTypesHelper(strategyDataTypes, 'Price leaves active range')),)}
         }
       }
     },
     "then": {
       "properties": {
-        
-        ${expectedDataTypesHelper(strategyDataConnectors, "Price leaves active range")},
         "elapsedTendTime": {
           "type": "number",
           "title": "Max time between tends",
@@ -375,7 +388,7 @@ export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": "Price moves percentage of active range away"
+          "const": ${JSON.stringify(new TriggerInfo('Price moves percentage of active range away', expectedDataTypesHelper(strategyDataTypes, 'Price moves percentage of active range away')))}
         }
       }
     },
@@ -387,7 +400,6 @@ export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
             "description": "The percentage of the range away to trigger new positions, 100% or 1 would be at the bounds of the range",
             "detailedDescription": "If you have a simple position ranging from ticks 0 - 100, and you set this value to 1, the trigger range will be the outer bounds. Using 0.5 would make the trigger range 25-75, 2 would make the range -50 - 150."
         },
-        ${expectedDataTypesHelper(strategyDataConnectors, "Price moves percentage of active range away")},
         "elapsedTendTime": {
           "type": "number",
           "title": "Max time between tends",
@@ -402,7 +414,7 @@ export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": "Price moves one way past positions"
+          "const": ${JSON.stringify(new TriggerInfo('Price moves one way past positions', expectedDataTypesHelper(strategyDataTypes, 'Price moves one way past positions')))}
         }
       }
     },
@@ -414,7 +426,6 @@ export function triggerPropertyHelper(omit: TriggerStyle[] = []): string {
             "description": "True for if the strategy should set new positions when the price (tick) is higher than the current positions, false for lower",
             "detailedDescription": "If our current position ranges from ticks 0 - 100, true will make our bundle execute only when the current tick is higher. Any other case (current tick less than 100) will result in a continue recommendation."
         },
-        ${expectedDataTypesHelper(strategyDataConnectors, "Price moves one way past positions")},
         "elapsedTendTime": {
           "type": "number",
           "title": "Max time between tends",

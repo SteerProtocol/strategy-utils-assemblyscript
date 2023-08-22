@@ -320,7 +320,7 @@ export function triggerPropertyHelper(strategyDataTypes: string[], omit: Trigger
       "enumNames": ${JSON.stringify(triggerStrings)},
       "enum": ${JSON.stringify(triggersObjects)},
       "title": "Logic to trigger new positions",
-      "type": "string",
+      "type": "object",
       "default": ${JSON.stringify(new TriggerInfo('None', expectedDataTypesHelper(strategyDataTypes, 'None')))}
     }`;
   }

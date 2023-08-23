@@ -1,3 +1,16 @@
+## [1.2.0-alpha.3](https://github.com/SteerProtocol/strategy-utils-assemblyscript/compare/v1.2.0-alpha.2...v1.2.0-alpha.3) (2023-08-23)
+
+
+### Features
+
+* :art: Move Config to all RJFS for EDT ([eb63008](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/eb63008fbd9ca9ed3dee9ab81336cce89de5c482))
+
+
+### Bug Fixes
+
+* :ambulance: Object validation ([74b7a05](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/74b7a059f79ea02202e10339c87ebefc5778ffcf))
+* remove type for trigger ([f8c4987](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/f8c49877779b82c5265c30c79962947eaa014886))
+
 ## [1.2.0-alpha.2](https://github.com/SteerProtocol/strategy-utils-assemblyscript/compare/v1.2.0-alpha.1...v1.2.0-alpha.2) (2023-08-17)
 
 

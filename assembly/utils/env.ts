@@ -21,3 +21,5 @@ export function ccxt_fetchOHLCV(exchangeId: string, symbol: string, timeframe: s
     }
     return _ccxt_fetchOHLCV(exchangeId, symbol, timeframe, limit, since);
 }
+
+export declare function timeString(candleSize: string, returnUnit: string): number;

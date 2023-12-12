@@ -9,28 +9,39 @@ import { Position } from "./types";
   // if (!shouldTriggerExecution(trigger, triggerObj, _positions, _currentTick, _timeSinceLastExecution)) return 'continue'
 
 // Gets active range from the output of LM.getPositions()
-export function parseActiveRange(_positions: string): Position {
-    // _positions will be '[[#,#,#],[#,#,#],[#,#,#]]' presumably. lower, upper, weight
-    // clean up our list by removing spaces and brackets
-    let positions = _positions.replaceAll(' ','');
-    positions = positions.replaceAll('[','');
-    let rangeArray = positions.split(']',2);
-    let startTick = rangeArray[0].split(',')[0];
-    let endRange = rangeArray[1].split(']',2);
-    const endTicks = endRange[0].split(',');
-    let endTick = endTicks[endTicks.length-1]
-    // if trailing comma
-    if (endTick == '') endTick = endTicks[endTicks.length-2]
-    const strArrays = [startTick, endTick];
-    // check null
-    if (strArrays[0] == '' || strArrays[0] == null || strArrays[1] == '' || strArrays[1] == null) {
-        return new Position(0, 0, 0);
-    }
-    // else return normal
-    const lowerTick = i32(parseInt(strArrays[0]));
-    const upperTick = i32(parseInt(strArrays[1]));
+// export function parseActiveRange(_positions: string): Position {
+//     // _positions will be '[[#,#,#],[#,#,#],[#,#,#]]' presumably. lower, upper, weight
+//     // clean up our list by removing spaces and brackets
+//     let positions = _positions.replaceAll(' ','');
+//     positions = positions.replaceAll('[','');
+//     let rangeArray = positions.split(']',2);
+//     let startTick = rangeArray[0].split(',')[0];
+//     let endRange = rangeArray[1].split(']',2);
+//     const endTicks = endRange[0].split(',');
+//     let endTick = endTicks[endTicks.length-1]
+//     // if trailing comma
+//     if (endTick == '') endTick = endTicks[endTicks.length-2]
+//     const strArrays = [startTick, endTick];
+//     // check null
+//     if (strArrays[0] == '' || strArrays[0] == null || strArrays[1] == '' || strArrays[1] == null) {
+//         return new Position(0, 0, 0);
+//     }
+//     // else return normal
+//     const lowerTick = i32(parseInt(strArrays[0]));
+//     const upperTick = i32(parseInt(strArrays[1]));
+//     // weights shouldn't matter in this context, we just want the total active range
+//     return new Position(lowerTick, upperTick, 100);
+// }
+
+export function parseActiveRange(_positions: Array<Position>): Position {
+
+    if (_positions.length == 0) return new Position(0, 0, 0);
+    // get first pos start tick and last pos end
+    let startTick = _positions[0].startTick
+    let endTick = _positions[_positions.length - 1].endTick
+
     // weights shouldn't matter in this context, we just want the total active range
-    return new Position(lowerTick, upperTick, 100);
+    return new Position(startTick, endTick, 100);
 }
 
 export function emptyCurrentPosition(currentPosition: Position): boolean {
@@ -191,9 +202,9 @@ export function getTriggerExpectedDataTypes(triggerStyle: string): string[] {
 export function shouldTriggerExecution(
   _triggerStyle: string, 
   triggerOptions: TriggerConfigHelper, 
-  dataConnector1: string, 
-  dataConnector2: string, 
-  dataConnector3: string) : boolean {
+  dataConnector1: Array<Position>, 
+  dataConnector2: i64, 
+  dataConnector3: i64) : boolean {
 
     // possible dc inputs
     let currentPositionRange: Position;
@@ -208,34 +219,34 @@ export function shouldTriggerExecution(
         case TriggerStyle.DistanceFromCenterOfPositions:
             // parse ulm positions [0], current tick [1]
                   // @ts-ignore
-            timeSinceLastExecution = i64(parseInt(dataConnector3))
+            timeSinceLastExecution = i64((dataConnector3))
             if (timeSinceLastExecution >= i64(triggerOptions.elapsedTendTime)) return true
             currentPositionRange = parseActiveRange(dataConnector1)
-            currentTick = i64(parseInt(dataConnector2))
+            currentTick = i64((dataConnector2))
             return triggerFromDistance(currentPositionRange, triggerOptions.tickDistanceFromCenter, currentTick)
 
         case TriggerStyle.PercentageChangeFromPositionRange:
             // parse ulm positions [0], current tick [1]
-            timeSinceLastExecution = i64(parseInt(dataConnector3))
+            timeSinceLastExecution = i64((dataConnector3))
             if (timeSinceLastExecution >= i64(triggerOptions.elapsedTendTime)) return true
             currentPositionRange= parseActiveRange(dataConnector1)
-            currentTick = i64(parseInt(dataConnector2))
+            currentTick = i64((dataConnector2))
             return triggerFromPercentage(currentPositionRange, triggerOptions.percentageOfPositionRangeToTrigger, currentTick)
 
         case TriggerStyle.PositionsInactive:
             // parse ulm positions [0], current tick [1]
-            timeSinceLastExecution = i64(parseInt(dataConnector3))
+            timeSinceLastExecution = i64((dataConnector3))
             if (timeSinceLastExecution >= i64(triggerOptions.elapsedTendTime)) return true
             currentPositionRange = parseActiveRange(dataConnector1)
-            currentTick = i64(parseInt(dataConnector2))
+            currentTick = i64((dataConnector2))
             return triggerPositionsInactive(currentPositionRange, currentTick)
 
         case TriggerStyle.PricePastPositions:
             // parse ulm positions [0], current tick [1]
-            timeSinceLastExecution = i64(parseInt(dataConnector3))
+            timeSinceLastExecution = i64((dataConnector3))
             if (timeSinceLastExecution >= i64(triggerOptions.elapsedTendTime)) return true
             currentPositionRange = parseActiveRange(dataConnector1)
-            currentTick = i64(parseInt(dataConnector2))
+            currentTick = i64((dataConnector2))
             return triggerPricePastPositions(currentPositionRange, currentTick,  triggerOptions.triggerWhenOver)
         default:
             return true
@@ -281,17 +292,18 @@ function getTriggerName(trigger: TriggerStyle): string {
     // }`
   }
 
-  @serializable
-  export class TriggerInfo {
-    name: string = '';
-    expectedDataTypes: string[] = [];
-    constructor (_name: string, _expectedDataTypes: string[]) {
-      this.name = _name
-      this.expectedDataTypes = _expectedDataTypes
-    }
-  }
+  // @serializable
+  // export class TriggerInfo {
+  //   name: string = '';
+  //   expectedDataTypes: string[] = [];
+  //   constructor (_name: string, _expectedDataTypes: string[]) {
+  //     this.name = _name
+  //     this.expectedDataTypes = _expectedDataTypes
+  //   }
+  // }
 
-export function triggerPropertyHelper(strategyDataTypes: string[], omit: TriggerStyle[] = []): string {
+export function triggerPropertyHelper(): string {
+// export function triggerPropertyHelper(strategyDataTypes: string[], omit: TriggerStyle[] = []): string {
     // const triggerList = [
     //     TriggerStyle.DistanceFromCenterOfPositions,
     //     TriggerStyle.None,
@@ -300,12 +312,12 @@ export function triggerPropertyHelper(strategyDataTypes: string[], omit: Trigger
     //     TriggerStyle.PricePastPositions,
     // ];
 
-    const triggersObjects: TriggerInfo[] = [
-      new TriggerInfo('Current Price set distance from center of positions', expectedDataTypesHelper(strategyDataTypes, 'Current Price set distance from center of positions')),
-      new TriggerInfo('Price leaves active range', expectedDataTypesHelper(strategyDataTypes, 'Price leaves active range')),
-      new TriggerInfo('Price moves percentage of active range away', expectedDataTypesHelper(strategyDataTypes, 'Price moves percentage of active range away')),
-      new TriggerInfo('Price moves one way past positions', expectedDataTypesHelper(strategyDataTypes, 'Price moves one way past positions')),
-      new TriggerInfo('None', expectedDataTypesHelper(strategyDataTypes, 'None')),
+    const triggersObjects: string[] = [
+      'Current Price set distance from center of positions',
+      'Price leaves active range', 
+      'Price moves percentage of active range away', 
+      'Price moves one way past positions', 
+      'None',
     ];
 
     const triggerStrings = [
@@ -319,17 +331,18 @@ export function triggerPropertyHelper(strategyDataTypes: string[], omit: Trigger
     return `"triggerStyle": {
       "enumNames": ${JSON.stringify(triggerStrings)},
       "enum": ${JSON.stringify(triggersObjects)},
+      "type": "string",
       "title": "Logic to trigger new positions",
-      "default": ${JSON.stringify(new TriggerInfo('None', expectedDataTypesHelper(strategyDataTypes, 'None')))}
+      "default": "None"
     }`;
   }
 
-  export function allOfTrigger(strategyDataTypes: string[]): string {
+  export function allOfTrigger(): string {
     return `{
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": ${JSON.stringify(new TriggerInfo('None', expectedDataTypesHelper(strategyDataTypes, 'None')))}
+          "const": "None"
         }
       }
     },
@@ -341,7 +354,7 @@ export function triggerPropertyHelper(strategyDataTypes: string[], omit: Trigger
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": ${JSON.stringify(new TriggerInfo('Current Price set distance from center of positions', expectedDataTypesHelper(strategyDataTypes, 'Current Price set distance from center of positions')))}
+          "const": "Current Price set distance from center of positions"
         }
       }
     },
@@ -367,7 +380,7 @@ export function triggerPropertyHelper(strategyDataTypes: string[], omit: Trigger
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": ${JSON.stringify(new TriggerInfo('Price leaves active range', expectedDataTypesHelper(strategyDataTypes, 'Price leaves active range')),)}
+          "const": "Price leaves active range"
         }
       }
     },
@@ -387,7 +400,7 @@ export function triggerPropertyHelper(strategyDataTypes: string[], omit: Trigger
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": ${JSON.stringify(new TriggerInfo('Price moves percentage of active range away', expectedDataTypesHelper(strategyDataTypes, 'Price moves percentage of active range away')))}
+          "const": "Price moves percentage of active range away"
         }
       }
     },
@@ -413,7 +426,7 @@ export function triggerPropertyHelper(strategyDataTypes: string[], omit: Trigger
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": ${JSON.stringify(new TriggerInfo('Price moves one way past positions', expectedDataTypesHelper(strategyDataTypes, 'Price moves one way past positions')))}
+          "const": "Price moves one way past positions"
         }
       }
     },

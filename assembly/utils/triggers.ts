@@ -328,13 +328,147 @@ export function triggerPropertyHelper(): string {
       'None'
     ]
 
+    // return `"triggerStyle": {
+    //   "enumNames": ${JSON.stringify(triggerStrings)},
+    //   "enum": ${JSON.stringify(triggersObjects)},
+    //   "type": "string",
+    //   "title": "Logic to trigger new positions",
+    //   "default": "None"
+    // }`;
+
     return `"triggerStyle": {
-      "enumNames": ${JSON.stringify(triggerStrings)},
-      "enum": ${JSON.stringify(triggersObjects)},
+      "enumNames": [
+          "Trigger when price moves set distance away from center of liquidity range",
+          "Trigger when price leaves active liquidity range",
+          "Trigger when price moves a proportion of active liquidity range away",
+          "Trigger when price moves out of active range only in one direction",
+          "None"
+      ],
+      "enum": [
+        "Current Price set distance from center of positions",
+        "Price leaves active range", 
+        "Price moves percentage of active range away", 
+        "Price moves one way past positions", 
+        "None"
+      ],
       "type": "string",
       "title": "Logic to trigger new positions",
       "default": "None"
-    }`;
+  }`
+  }
+
+  export function configDefinitions(): string {
+    return `
+    "elapsedTendTime": {
+        "type": "number",
+        "title": "Max time between tends",
+        "description": "If trigger conditions have not been met for this period of time, the strategy will execute regardless of trigger logic to update vault accounting.",
+        "default": 1209600
+    },
+    "bins": {
+        "type": "number",
+        "title": "Positions",
+        "description": "The max number of positions the strategy will make to achieve the desired curve.",
+        "detailedDescription": "The strategy will attempt to make this number of positions, but can be limited by available range and pool spacing"
+    },
+    "reflect": {
+        "title": "Reflect Curve Over Y-Axis",
+        "type": "boolean",
+        "default": false
+    },
+    "invert": {
+        "title": "Invert Curve Over X-Axis",
+        "type": "boolean",
+        "default": false
+    }`
+  }
+
+  export function triggerDependency(): string {
+    return `"triggerStyle": {
+      "oneOf": [
+          {
+              "properties": {
+                  "triggerStyle": {
+                      "const": "None"
+                  }
+              },
+              "required": []
+          },
+          {
+              "properties": {
+                  "triggerStyle": {
+                      "const": "Current Price set distance from center of positions"
+                  },
+                  "tickDistanceFromCenter": {
+                      "type": "integer",
+                      "title": "Tick Distance",
+                      "description": "The number of basis points (ticks) away from the central price of existing positions",
+                      "detailedDescription": "The trigger mechanism for new positions is based on a fixed number of ticks from the midpoint of the active range. For instance, with a position range of 0-100 and a tick distance set at 75, the trigger points are calculated 75 ticks on either side of the central tick of our positions, which is 50. This establishes a trigger range extending from -25 to 125. Any current tick falling within this range will not prompt execution. The center of this trigger range is dynamically adjusted based on the locations of future positions."
+                  },
+                  "elapsedTendTime": {
+                       "$ref": "#/definitions/elapsedTendTime"
+                  }
+              },
+              "required": [
+                  "tickDistanceFromCenter",
+                  "elapsedTendTime"
+              ]
+          },
+          {
+              "properties": {
+                  "triggerStyle": {
+                      "const": "Price leaves active range"
+                  },
+                  "elapsedTendTime": {
+                       "$ref": "#/definitions/elapsedTendTime"
+                  }
+              },
+              "required": [
+                  "elapsedTendTime"
+              ]
+          },
+          {
+              "properties": {
+                  "triggerStyle": {
+                      "const": "Price moves percentage of active range away"
+                  },
+                  "percentageOfPositionRangeToTrigger": {
+                      "type": "number",
+                      "title": "Percentage of Range",
+                      "description": "Specify the percentage of the total range at which to initiate new positions, where 100% or a value of 1 corresponds to the edge of the range.",
+                      "detailedDescription": "For a position with a range spanning from 0 to 100 ticks, setting this value to 1 will activate the trigger at the outermost bounds of the range. If the value is set to 0.5, the trigger range narrows to between 25 and 75 ticks. Conversely, setting the value to 2 expands the trigger range, extending it from -50 to 150 ticks."
+                  },
+                  "elapsedTendTime": {
+                       "$ref": "#/definitions/elapsedTendTime"
+                  }
+              },
+              "required": [
+                  "percentageOfPositionRangeToTrigger",
+                  "elapsedTendTime"
+              ]
+          },
+          {
+              "properties": {
+                  "triggerStyle": {
+                      "const": "Price moves one way past positions"
+                  },
+                  "triggerWhenOver": {
+                      "type": "boolean",
+                      "title": "Price Moves Higher",
+                      "description": "Set 'True' to initiate new positions when the current price (tick) exceeds the level of existing positions. Conversely, mark it as 'False' if new positions should be established when the price is lower than the current positions.",
+                      "detailedDescription": "When the existing position spans from 0 to 100 ticks, setting the parameter to 'True' will prompt the strategy to execute only if the current tick exceeds 100. In any scenario where the current tick is less than or equal to 100, the strategy will recommend to continue without executing new execution."
+                  },
+                  "elapsedTendTime": {
+                       "$ref": "#/definitions/elapsedTendTime"
+                  }
+              },
+              "required": [
+                  "triggerWhenOver",
+                  "elapsedTendTime"
+              ]
+          }
+      ]
+  }`
   }
 
   export function allOfTrigger(): string {

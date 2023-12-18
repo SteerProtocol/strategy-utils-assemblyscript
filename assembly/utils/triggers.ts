@@ -9,28 +9,39 @@ import { Position } from "./types";
   // if (!shouldTriggerExecution(trigger, triggerObj, _positions, _currentTick, _timeSinceLastExecution)) return 'continue'
 
 // Gets active range from the output of LM.getPositions()
-export function parseActiveRange(_positions: string): Position {
-    // _positions will be '[[#,#,#],[#,#,#],[#,#,#]]' presumably. lower, upper, weight
-    // clean up our list by removing spaces and brackets
-    let positions = _positions.replaceAll(' ','');
-    positions = positions.replaceAll('[','');
-    let rangeArray = positions.split(']',2);
-    let startTick = rangeArray[0].split(',')[0];
-    let endRange = rangeArray[1].split(']',2);
-    const endTicks = endRange[0].split(',');
-    let endTick = endTicks[endTicks.length-1]
-    // if trailing comma
-    if (endTick == '') endTick = endTicks[endTicks.length-2]
-    const strArrays = [startTick, endTick];
-    // check null
-    if (strArrays[0] == '' || strArrays[0] == null || strArrays[1] == '' || strArrays[1] == null) {
-        return new Position(0, 0, 0);
-    }
-    // else return normal
-    const lowerTick = i32(parseInt(strArrays[0]));
-    const upperTick = i32(parseInt(strArrays[1]));
+// export function parseActiveRange(_positions: string): Position {
+//     // _positions will be '[[#,#,#],[#,#,#],[#,#,#]]' presumably. lower, upper, weight
+//     // clean up our list by removing spaces and brackets
+//     let positions = _positions.replaceAll(' ','');
+//     positions = positions.replaceAll('[','');
+//     let rangeArray = positions.split(']',2);
+//     let startTick = rangeArray[0].split(',')[0];
+//     let endRange = rangeArray[1].split(']',2);
+//     const endTicks = endRange[0].split(',');
+//     let endTick = endTicks[endTicks.length-1]
+//     // if trailing comma
+//     if (endTick == '') endTick = endTicks[endTicks.length-2]
+//     const strArrays = [startTick, endTick];
+//     // check null
+//     if (strArrays[0] == '' || strArrays[0] == null || strArrays[1] == '' || strArrays[1] == null) {
+//         return new Position(0, 0, 0);
+//     }
+//     // else return normal
+//     const lowerTick = i32(parseInt(strArrays[0]));
+//     const upperTick = i32(parseInt(strArrays[1]));
+//     // weights shouldn't matter in this context, we just want the total active range
+//     return new Position(lowerTick, upperTick, 100);
+// }
+
+export function parseActiveRange(_positions: Array<Position>): Position {
+
+    if (_positions.length == 0) return new Position(0, 0, 0);
+    // get first pos start tick and last pos end
+    let startTick = _positions[0].startTick
+    let endTick = _positions[_positions.length - 1].endTick
+
     // weights shouldn't matter in this context, we just want the total active range
-    return new Position(lowerTick, upperTick, 100);
+    return new Position(startTick, endTick, 100);
 }
 
 export function emptyCurrentPosition(currentPosition: Position): boolean {
@@ -191,9 +202,9 @@ export function getTriggerExpectedDataTypes(triggerStyle: string): string[] {
 export function shouldTriggerExecution(
   _triggerStyle: string, 
   triggerOptions: TriggerConfigHelper, 
-  dataConnector1: string, 
-  dataConnector2: string, 
-  dataConnector3: string) : boolean {
+  dataConnector1: Array<Position>, 
+  dataConnector2: i64, 
+  dataConnector3: i64) : boolean {
 
     // possible dc inputs
     let currentPositionRange: Position;
@@ -208,34 +219,34 @@ export function shouldTriggerExecution(
         case TriggerStyle.DistanceFromCenterOfPositions:
             // parse ulm positions [0], current tick [1]
                   // @ts-ignore
-            timeSinceLastExecution = i64(parseInt(dataConnector3))
+            timeSinceLastExecution = i64((dataConnector3))
             if (timeSinceLastExecution >= i64(triggerOptions.elapsedTendTime)) return true
             currentPositionRange = parseActiveRange(dataConnector1)
-            currentTick = i64(parseInt(dataConnector2))
+            currentTick = i64((dataConnector2))
             return triggerFromDistance(currentPositionRange, triggerOptions.tickDistanceFromCenter, currentTick)
 
         case TriggerStyle.PercentageChangeFromPositionRange:
             // parse ulm positions [0], current tick [1]
-            timeSinceLastExecution = i64(parseInt(dataConnector3))
+            timeSinceLastExecution = i64((dataConnector3))
             if (timeSinceLastExecution >= i64(triggerOptions.elapsedTendTime)) return true
             currentPositionRange= parseActiveRange(dataConnector1)
-            currentTick = i64(parseInt(dataConnector2))
+            currentTick = i64((dataConnector2))
             return triggerFromPercentage(currentPositionRange, triggerOptions.percentageOfPositionRangeToTrigger, currentTick)
 
         case TriggerStyle.PositionsInactive:
             // parse ulm positions [0], current tick [1]
-            timeSinceLastExecution = i64(parseInt(dataConnector3))
+            timeSinceLastExecution = i64((dataConnector3))
             if (timeSinceLastExecution >= i64(triggerOptions.elapsedTendTime)) return true
             currentPositionRange = parseActiveRange(dataConnector1)
-            currentTick = i64(parseInt(dataConnector2))
+            currentTick = i64((dataConnector2))
             return triggerPositionsInactive(currentPositionRange, currentTick)
 
         case TriggerStyle.PricePastPositions:
             // parse ulm positions [0], current tick [1]
-            timeSinceLastExecution = i64(parseInt(dataConnector3))
+            timeSinceLastExecution = i64((dataConnector3))
             if (timeSinceLastExecution >= i64(triggerOptions.elapsedTendTime)) return true
             currentPositionRange = parseActiveRange(dataConnector1)
-            currentTick = i64(parseInt(dataConnector2))
+            currentTick = i64((dataConnector2))
             return triggerPricePastPositions(currentPositionRange, currentTick,  triggerOptions.triggerWhenOver)
         default:
             return true
@@ -281,17 +292,18 @@ function getTriggerName(trigger: TriggerStyle): string {
     // }`
   }
 
-  @serializable
-  export class TriggerInfo {
-    name: string = '';
-    expectedDataTypes: string[] = [];
-    constructor (_name: string, _expectedDataTypes: string[]) {
-      this.name = _name
-      this.expectedDataTypes = _expectedDataTypes
-    }
-  }
+  // @serializable
+  // export class TriggerInfo {
+  //   name: string = '';
+  //   expectedDataTypes: string[] = [];
+  //   constructor (_name: string, _expectedDataTypes: string[]) {
+  //     this.name = _name
+  //     this.expectedDataTypes = _expectedDataTypes
+  //   }
+  // }
 
-export function triggerPropertyHelper(strategyDataTypes: string[], omit: TriggerStyle[] = []): string {
+export function triggerPropertyHelper(): string {
+// export function triggerPropertyHelper(strategyDataTypes: string[], omit: TriggerStyle[] = []): string {
     // const triggerList = [
     //     TriggerStyle.DistanceFromCenterOfPositions,
     //     TriggerStyle.None,
@@ -300,12 +312,12 @@ export function triggerPropertyHelper(strategyDataTypes: string[], omit: Trigger
     //     TriggerStyle.PricePastPositions,
     // ];
 
-    const triggersObjects: TriggerInfo[] = [
-      new TriggerInfo('Current Price set distance from center of positions', expectedDataTypesHelper(strategyDataTypes, 'Current Price set distance from center of positions')),
-      new TriggerInfo('Price leaves active range', expectedDataTypesHelper(strategyDataTypes, 'Price leaves active range')),
-      new TriggerInfo('Price moves percentage of active range away', expectedDataTypesHelper(strategyDataTypes, 'Price moves percentage of active range away')),
-      new TriggerInfo('Price moves one way past positions', expectedDataTypesHelper(strategyDataTypes, 'Price moves one way past positions')),
-      new TriggerInfo('None', expectedDataTypesHelper(strategyDataTypes, 'None')),
+    const triggersObjects: string[] = [
+      'Current Price set distance from center of positions',
+      'Price leaves active range', 
+      'Price moves percentage of active range away', 
+      'Price moves one way past positions', 
+      'None',
     ];
 
     const triggerStrings = [
@@ -316,20 +328,155 @@ export function triggerPropertyHelper(strategyDataTypes: string[], omit: Trigger
       'None'
     ]
 
+    // return `"triggerStyle": {
+    //   "enumNames": ${JSON.stringify(triggerStrings)},
+    //   "enum": ${JSON.stringify(triggersObjects)},
+    //   "type": "string",
+    //   "title": "Logic to trigger new positions",
+    //   "default": "None"
+    // }`;
+
     return `"triggerStyle": {
-      "enumNames": ${JSON.stringify(triggerStrings)},
-      "enum": ${JSON.stringify(triggersObjects)},
+      "enumNames": [
+          "Trigger when price moves set distance away from center of liquidity range",
+          "Trigger when price leaves active liquidity range",
+          "Trigger when price moves a proportion of active liquidity range away",
+          "Trigger when price moves out of active range only in one direction",
+          "None"
+      ],
+      "enum": [
+        "Current Price set distance from center of positions",
+        "Price leaves active range", 
+        "Price moves percentage of active range away", 
+        "Price moves one way past positions", 
+        "None"
+      ],
+      "type": "string",
       "title": "Logic to trigger new positions",
-      "default": ${JSON.stringify(new TriggerInfo('None', expectedDataTypesHelper(strategyDataTypes, 'None')))}
-    }`;
+      "default": "None"
+  }`
   }
 
-  export function allOfTrigger(strategyDataTypes: string[]): string {
+  export function configDefinitions(): string {
+    return `
+    "elapsedTendTime": {
+        "type": "number",
+        "title": "Max time between tends",
+        "description": "If trigger conditions have not been met for this period of time, the strategy will execute regardless of trigger logic to update vault accounting.",
+        "default": 1209600
+    },
+    "bins": {
+        "type": "number",
+        "title": "Positions",
+        "description": "The max number of positions the strategy will make to achieve the desired curve.",
+        "detailedDescription": "The strategy will attempt to make this number of positions, but can be limited by available range and pool spacing"
+    },
+    "reflect": {
+        "title": "Reflect Curve Over Y-Axis",
+        "type": "boolean",
+        "default": false
+    },
+    "invert": {
+        "title": "Invert Curve Over X-Axis",
+        "type": "boolean",
+        "default": false
+    }`
+  }
+
+  export function triggerDependency(): string {
+    return `"triggerStyle": {
+      "oneOf": [
+          {
+              "properties": {
+                  "triggerStyle": {
+                      "const": "None"
+                  }
+              },
+              "required": []
+          },
+          {
+              "properties": {
+                  "triggerStyle": {
+                      "const": "Current Price set distance from center of positions"
+                  },
+                  "tickDistanceFromCenter": {
+                      "type": "integer",
+                      "title": "Tick Distance",
+                      "description": "The number of basis points (ticks) away from the central price of existing positions",
+                      "detailedDescription": "The trigger mechanism for new positions is based on a fixed number of ticks from the midpoint of the active range. For instance, with a position range of 0-100 and a tick distance set at 75, the trigger points are calculated 75 ticks on either side of the central tick of our positions, which is 50. This establishes a trigger range extending from -25 to 125. Any current tick falling within this range will not prompt execution. The center of this trigger range is dynamically adjusted based on the locations of future positions."
+                  },
+                  "elapsedTendTime": {
+                       "$ref": "#/definitions/elapsedTendTime"
+                  }
+              },
+              "required": [
+                  "tickDistanceFromCenter",
+                  "elapsedTendTime"
+              ]
+          },
+          {
+              "properties": {
+                  "triggerStyle": {
+                      "const": "Price leaves active range"
+                  },
+                  "elapsedTendTime": {
+                       "$ref": "#/definitions/elapsedTendTime"
+                  }
+              },
+              "required": [
+                  "elapsedTendTime"
+              ]
+          },
+          {
+              "properties": {
+                  "triggerStyle": {
+                      "const": "Price moves percentage of active range away"
+                  },
+                  "percentageOfPositionRangeToTrigger": {
+                      "type": "number",
+                      "title": "Percentage of Range",
+                      "description": "Specify the percentage of the total range at which to initiate new positions, where 100% or a value of 1 corresponds to the edge of the range.",
+                      "detailedDescription": "For a position with a range spanning from 0 to 100 ticks, setting this value to 1 will activate the trigger at the outermost bounds of the range. If the value is set to 0.5, the trigger range narrows to between 25 and 75 ticks. Conversely, setting the value to 2 expands the trigger range, extending it from -50 to 150 ticks."
+                  },
+                  "elapsedTendTime": {
+                       "$ref": "#/definitions/elapsedTendTime"
+                  }
+              },
+              "required": [
+                  "percentageOfPositionRangeToTrigger",
+                  "elapsedTendTime"
+              ]
+          },
+          {
+              "properties": {
+                  "triggerStyle": {
+                      "const": "Price moves one way past positions"
+                  },
+                  "triggerWhenOver": {
+                      "type": "boolean",
+                      "title": "Price Moves Higher",
+                      "description": "Set 'True' to initiate new positions when the current price (tick) exceeds the level of existing positions. Conversely, mark it as 'False' if new positions should be established when the price is lower than the current positions.",
+                      "detailedDescription": "When the existing position spans from 0 to 100 ticks, setting the parameter to 'True' will prompt the strategy to execute only if the current tick exceeds 100. In any scenario where the current tick is less than or equal to 100, the strategy will recommend to continue without executing new execution."
+                  },
+                  "elapsedTendTime": {
+                       "$ref": "#/definitions/elapsedTendTime"
+                  }
+              },
+              "required": [
+                  "triggerWhenOver",
+                  "elapsedTendTime"
+              ]
+          }
+      ]
+  }`
+  }
+
+  export function allOfTrigger(): string {
     return `{
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": ${JSON.stringify(new TriggerInfo('None', expectedDataTypesHelper(strategyDataTypes, 'None')))}
+          "const": "None"
         }
       }
     },
@@ -341,7 +488,7 @@ export function triggerPropertyHelper(strategyDataTypes: string[], omit: Trigger
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": ${JSON.stringify(new TriggerInfo('Current Price set distance from center of positions', expectedDataTypesHelper(strategyDataTypes, 'Current Price set distance from center of positions')))}
+          "const": "Current Price set distance from center of positions"
         }
       }
     },
@@ -367,7 +514,7 @@ export function triggerPropertyHelper(strategyDataTypes: string[], omit: Trigger
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": ${JSON.stringify(new TriggerInfo('Price leaves active range', expectedDataTypesHelper(strategyDataTypes, 'Price leaves active range')),)}
+          "const": "Price leaves active range"
         }
       }
     },
@@ -387,7 +534,7 @@ export function triggerPropertyHelper(strategyDataTypes: string[], omit: Trigger
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": ${JSON.stringify(new TriggerInfo('Price moves percentage of active range away', expectedDataTypesHelper(strategyDataTypes, 'Price moves percentage of active range away')))}
+          "const": "Price moves percentage of active range away"
         }
       }
     },
@@ -413,7 +560,7 @@ export function triggerPropertyHelper(strategyDataTypes: string[], omit: Trigger
     "if": {
       "properties": {
         "triggerStyle": {
-          "const": ${JSON.stringify(new TriggerInfo('Price moves one way past positions', expectedDataTypesHelper(strategyDataTypes, 'Price moves one way past positions')))}
+          "const": "Price moves one way past positions"
         }
       }
     },

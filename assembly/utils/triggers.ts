@@ -254,13 +254,13 @@ export function shouldTriggerExecution(
 }
 
 export function getTriggerStyle(trigger: string): TriggerStyle {
-  if (trigger === 'Current Price set distance from center of positions') {
+  if (trigger === 'Price Gap Trigger') {
       return TriggerStyle.DistanceFromCenterOfPositions;
-  } else if (trigger === 'Price leaves active range') {
+  } else if (trigger === 'Range Inactive Trigger') {
       return TriggerStyle.PositionsInactive;
-  } else if (trigger === 'Price moves percentage of active range away') {
+  } else if (trigger === 'Price Percentage Drift Trigger') {
       return TriggerStyle.PercentageChangeFromPositionRange;
-  } else if (trigger === 'Price moves one way past positions') {
+  } else if (trigger === 'One-Way Range Exit Trigger') {
       return TriggerStyle.PricePastPositions;
   } else {
       return TriggerStyle.None;
@@ -269,13 +269,13 @@ export function getTriggerStyle(trigger: string): TriggerStyle {
 
 function getTriggerName(trigger: TriggerStyle): string {
   if (trigger === TriggerStyle.DistanceFromCenterOfPositions) {
-      return 'Current Price set distance from center of positions';
+      return 'Price Gap Trigger';
   } else if (trigger === TriggerStyle.PositionsInactive) {
-      return 'Price leaves active range';
+      return 'Range Inactive Trigger';
   } else if (trigger === TriggerStyle.PercentageChangeFromPositionRange) {
-      return 'Price moves percentage of active range away';
+      return 'Price Percentage Drift Trigger';
   } else if (trigger === TriggerStyle.PricePastPositions) {
-      return 'Price moves one way past positions';
+      return 'One-Way Range Exit Trigger';
   } else {
       return 'None';
   }

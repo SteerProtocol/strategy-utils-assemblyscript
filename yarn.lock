@@ -4585,10 +4585,10 @@ json-as@^0.5.20:
     as-string-sink "^0.5.0"
     as-variant "^0.4.1"
 
-json-as@^0.5.43:
-  version "0.5.59"
-  resolved "https://registry.yarnpkg.com/json-as/-/json-as-0.5.59.tgz#ff15498d85217594dde58e3d3f3deb0c05b4272b"
-  integrity sha512-uKCv7fAV0ZDaMygPVFECbMB40WuQpwN3Tb+W7Pgq6nq8pJms9dbw3NcJ21j5k8/z9WjdCV/wn6DOCHR5/lIseA==
+json-as@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/json-as/-/json-as-0.7.2.tgz#e7090925426c24d4941f5f2a821948c3f285ce40"
+  integrity sha512-J5DogNGKVNar0A1rYeqQq0vHCwaLU/c47bp8KhNO/7llx+pW02SD2mg+ci1IRbglw93Gzq0//Jz76Z5b+CIQ5w==
   dependencies:
     as-string-sink "^0.5.3"
     as-variant "^0.4.1"

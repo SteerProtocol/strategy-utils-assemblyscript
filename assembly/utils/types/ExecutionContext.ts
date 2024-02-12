@@ -4,8 +4,8 @@ import { JSON } from 'json-as/assembly';
 export class ExecutionContext {
   executionTimestamp: number = 0;
   epochLength: number = 0;
-  epochTimestamp: i32 = 0;
+  epochTimestamp: i64 = 0;
   vaultAddress: string = "";
-  blockTime: i32 = 0;
-  blockNumber: i32 = 0;
+  blockTime: i64 = 0;
+  blockNumber: i64 = 0;
 }

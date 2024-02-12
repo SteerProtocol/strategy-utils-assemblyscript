@@ -16,7 +16,7 @@ export class CandlestickConverter {
 
         // Initialize variables
         let i: i32 = 0;
-        let currentTimestamp: i32 = Math.floor(rawData[0].timestamp / period) * period;
+        let currentTimestamp: i64 = Math.floor(rawData[0].timestamp / period) * period;
         let open: f64 = rawData[0].price;
         let high: f64 = rawData[0].price;
         let low: f64 = rawData[0].price;

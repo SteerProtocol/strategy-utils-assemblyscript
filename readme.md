@@ -357,10 +357,10 @@ This class represents the execution context containing various properties relate
 
 - `executionTimestamp` (number): The execution timestamp.
 - `epochLength` (number): The length of the epoch.
-- `epochTimestamp` (i32): The epoch timestamp.
+- `epochTimestamp` (i64): The epoch timestamp.
 - `vaultAddress` (string): The vault address.
-- `blockTime` (i32): The block time.
-- `blockNumber` (i32): The block number.
+- `blockTime` (i64): The block time.
+- `blockNumber` (i64): The block number.
 
 ---
 

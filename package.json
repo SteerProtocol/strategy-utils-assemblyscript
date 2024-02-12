@@ -27,7 +27,7 @@
     "as-bignum": "^0.2.23",
     "commitizen": "^4.2.4",
     "conventional-changelog-conventionalcommits": "^4.6.0",
-    "json-as": "^0.5.43",
+    "json-as": "^0.7.2",
     "patch-package": "^8.0.0",
     "typescript": "^4.3.5",
     "visitor-as": "^0.11.4"

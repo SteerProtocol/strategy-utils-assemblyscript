@@ -694,20 +694,10 @@ export class MerkleLeafDto {
 }
 
 @serializable
-export class MerkleProofsByActionDto {
-  approveToken: string[] = [];
-}
-
-@serializable
-export class MerkleProofsByDigestDto {
-  approveDigest: string[] = [];
-}
-
-@serializable
 export class MerkleArtifactDto {
   leafs: MerkleLeafDto[] = [];
-  proofsByAction: MerkleProofsByActionDto = new MerkleProofsByActionDto();
-  proofsByDigest: MerkleProofsByDigestDto = new MerkleProofsByDigestDto();
+  proofsByAction: Map<string, string[]> = new Map<string, string[]>();
+  proofsByDigest: Map<string, string[]> = new Map<string, string[]>();
 }
 
 @serializable

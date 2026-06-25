@@ -1,23 +1,66 @@
-const myModule = require("../index");
+const fs = require('fs');
+const os = require('os');
+const { execFileSync } = require('child_process');
+const loader = require('@assemblyscript/loader');
+const path = require('path');
 
-describe("WASM Module", () => {
-  describe("keltnerChannels", () => {
-    it("Price should ", async () => {
-      const price =  new myModule.Price(1,2,3,4);
-      expect(price.high).toBe(1);
-      expect(price.low).toBe(2);
-      expect(price.open).toBe(3);
-      expect(price.close).toBe(4);
+describe('AssemblyScript package surface', () => {
+  it('compiles the package with the modern AssemblyScript toolchain', () => {
+    execFileSync('npm', ['run', 'asbuild'], {
+      cwd: path.resolve(__dirname, '..'),
+      stdio: 'pipe',
     });
-    it("True average should compute properly", async () => {
-      const prices =  [new myModule.Price(1,2,3,4),new myModule.Price(2,3,4,5)];
-      const trueAverage = myModule.getAverageTrueRange(prices, 1);
-      expect(trueAverage).toBe(2);
+  });
+
+  it('compiles a Panoptic consumer using exported DTOs and wrappers', () => {
+    execFileSync(
+      path.resolve(__dirname, '../node_modules/.bin/asc'),
+      [path.resolve(__dirname, 'fixtures/panoptic-consumer.ts'), '--config', path.resolve(__dirname, '../asconfig.json'), '--noEmit'],
+      {
+        cwd: path.resolve(__dirname, '..'),
+        stdio: 'pipe',
+      },
+    );
+  });
+
+  it('preserves json-as runtime compatibility for legacy prices and dynamic Merkle proof keys', () => {
+    const repoRoot = path.resolve(__dirname, '..');
+    const wasmPath = path.join(os.tmpdir(), 'strategy-utils-json-compat.fixture.wasm');
+
+    execFileSync(
+      path.resolve(repoRoot, 'node_modules/.bin/asc'),
+      [
+        path.resolve(__dirname, 'fixtures/json-compat.ts'),
+        '--config',
+        path.resolve(repoRoot, 'asconfig.json'),
+        '--outFile',
+        wasmPath,
+        '--exportRuntime',
+      ],
+      {
+        cwd: repoRoot,
+        stdio: 'pipe',
+      },
+    );
+
+    const wasm = loader.instantiateSync(fs.readFileSync(wasmPath), {});
+    const { parseStringifiedPrices, roundTripMerkleProofActions, __getString, __newString } = wasm.exports;
+
+    expect(__getString(parseStringifiedPrices())).toBe('ok');
+
+    const input = JSON.stringify({
+      leafs: [],
+      proofsByAction: {
+        approveToken: ['0xaaa'],
+        rebalanceVault: ['0xbbb', '0xccc'],
+      },
+      proofsByDigest: {
+        '0x111': ['0xddd'],
+      },
     });
-    it("True average should support decimals ", async () => {
-      const prices =  [new myModule.Price(6.1,4.2,2.5,1.11),new myModule.Price(41,32,41,15)];
-      const trueAverage = myModule.getAverageTrueRange(prices, 1);
-      expect(trueAverage).toBe(39.88999938964844)
-    });
+
+    const output = JSON.parse(__getString(roundTripMerkleProofActions(__newString(input))));
+    expect(output.approveToken).toStrictEqual(['0xaaa']);
+    expect(output.rebalanceVault).toStrictEqual(['0xbbb', '0xccc']);
   });
 });

@@ -1,60 +1,54 @@
-import { JSON } from "assemblyscript-json";
+import { JSON } from "json-as/assembly";
 
+@serializable
 export class Price {
   constructor(
-    public high: f32,
-    public low: f32,
-    public open: f32,
-    public close: f32
+    public high: f32 = 0,
+    public low: f32 = 0,
+    public open: f32 = 0,
+    public close: f32 = 0
   ) {}
 }
 
-export function parsePrices(_prices: String): Array<Price> {
-  const prices = _prices;
-  // Parse an object using the JSON object
-  let jsonObj: JSON.Obj = <JSON.Obj>JSON.parse(prices);
-  const result: Array<Price> = [];
+function parsePriceField(candle: JSON.Obj, key: string): f32 {
+  const value = candle.get(key);
 
-  const data_arr = <JSON.Arr>jsonObj.getArr("data");
-  if (data_arr == null) {throw new Error()};
-  // First and only data result for this strategy is the candles
-  const val = <JSON.Arr>data_arr._arr[0]
-  if (val != null) {
-      if (val.isArr) {
-      const pricesArray = (<JSON.Arr>val).valueOf();
-
-      for (let priceIndex = 0; priceIndex < pricesArray.length; priceIndex++) {
-          const price = pricesArray[priceIndex];
-
-          const candle = <JSON.Obj>JSON.parse(price.toString());
-
-          if (candle.isObj) {
-          const cl = candle.getValue("close");
-          const hi = candle.getValue("high");
-          const lo = candle.getValue("low");
-          const op = candle.getValue("open");
-
-          if (cl && hi && lo && op) {
-              //@ts-ignore
-              const close = f32(Number.parseFloat(cl.toString()));
-              //@ts-ignore
-              const high = f32(Number.parseFloat(hi.toString()));
-              //@ts-ignore
-              const low = f32(Number.parseFloat(lo.toString()));
-              //@ts-ignore
-              const open = f32(Number.parseFloat(op.toString()));
-
-              const obj: Price = new Price(high, low, open, close);
-
-              result.push(obj);
-          }
-          }
-
-          return result;
-      }
-      }
-      return [];
-  } else {
-      return [];
+  if (value === null) {
+    return 0;
   }
+
+  if (value!.type == JSON.Types.String) {
+    return f32.parse(value!.get<string>());
+  }
+
+  return f32.parse(value!.toString());
+}
+
+export function parsePrices(_prices: string): Array<Price> {
+  const payload = JSON.parse<JSON.Obj>(_prices);
+  const dataValue = payload.get("data");
+
+  if (dataValue === null) {
+    return [];
+  }
+
+  const data = dataValue!.get<JSON.Arr>();
+  if (data.length == 0) {
+    return [];
+  }
+
+  const candles = data.getAs<JSON.Arr>(0);
+  const result = new Array<Price>();
+
+  for (let priceIndex = 0; priceIndex < candles.length; priceIndex++) {
+    const candle = candles.getAs<JSON.Obj>(priceIndex);
+    result.push(new Price(
+      parsePriceField(candle, "high"),
+      parsePriceField(candle, "low"),
+      parsePriceField(candle, "open"),
+      parsePriceField(candle, "close"),
+    ));
+  }
+
+  return result;
 }

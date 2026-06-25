@@ -15,6 +15,11 @@
   resolved "https://registry.yarnpkg.com/@assemblyscript/loader/-/loader-0.19.9.tgz#9e290dbf5c164d9a0e397b253347e85e17c64057"
   integrity sha512-AL39UxO+LkYDXtxFTyJP1UVJYIgqVHTbwk9BMPZjoiNxPP/kxDP+LmHxkr1Pm6goR1QbnF69mn5NMuiLTde0mA==
 
+"@assemblyscript/loader@^0.28.19":
+  version "0.28.19"
+  resolved "https://registry.yarnpkg.com/@assemblyscript/loader/-/loader-0.28.19.tgz#541cd6012ecd9e8a86ea98b2c58aa37758c1c050"
+  integrity sha512-6OhPTJ0nS8aay8t2lhbA/XkyffgU15ECPsLHT0VZFG7j7sUA1CT2HS7nIALwjg6Pdpgp+RTHQukgK1IoCUbxCQ==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.16.7":
   version "7.16.7"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.16.7.tgz#44416b6bd7624b998f5b1af5d470856c40138789"
@@ -2010,18 +2015,13 @@ asn1@~0.2.3:
   dependencies:
     safer-buffer "~2.1.0"
 
-assemblyscript-json@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/assemblyscript-json/-/assemblyscript-json-1.1.0.tgz#49d38bc21f1ac36f2887528a35de6cf7d59c17be"
-  integrity sha512-UbE8ts8csTWQgd5TnSPN7MRV9NveuHv1bVnKmDLoo/tzjqxkmsZb3lu59Uk8H7SGoqdkDSEE049alx/nHnSdFw==
-
-assemblyscript@0.19.9:
-  version "0.19.9"
-  resolved "https://registry.yarnpkg.com/assemblyscript/-/assemblyscript-0.19.9.tgz#c86abab27fd6639fc2de92261334ba2c899f64ae"
-  integrity sha512-nVEg1bbGBegJp+UO9okNHgjCX6sri4OrIkl/LCaNWLIvioN2IjFeYt3R6ppZ6L813VYJxKhf0hr6lhXOXw3dvA==
+assemblyscript@^0.28.19:
+  version "0.28.19"
+  resolved "https://registry.yarnpkg.com/assemblyscript/-/assemblyscript-0.28.19.tgz#0c119bf7e50cbfc9d8629a0d234f151133b73c4d"
+  integrity sha512-yOAlAb9EsrI00oUaf6qUTtTcYYeelG2iC3f1LnA45XUeSlMrp2O2FF5Llj4P+Y84ZiIlh/ciEEpOaPwwmOKq8g==
   dependencies:
-    binaryen "101.0.0-nightly.20210723"
-    long "^4.0.0"
+    binaryen "130.0.0-nightly.20260609"
+    long "^5.2.4"
 
 assert-plus@1.0.0, assert-plus@^1.0.0:
   version "1.0.0"
@@ -2299,10 +2299,10 @@ binary-extensions@^2.2.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
-binaryen@101.0.0-nightly.20210723:
-  version "101.0.0-nightly.20210723"
-  resolved "https://registry.yarnpkg.com/binaryen/-/binaryen-101.0.0-nightly.20210723.tgz#b6bb7f3501341727681a03866c0856500eec3740"
-  integrity sha512-eioJNqhHlkguVSbblHOtLqlhtC882SOEPKmNFZaDuz1hzQjolxZ+eu3/kaS10n3sGPONsIZsO7R9fR00UyhEUA==
+binaryen@130.0.0-nightly.20260609:
+  version "130.0.0-nightly.20260609"
+  resolved "https://registry.yarnpkg.com/binaryen/-/binaryen-130.0.0-nightly.20260609.tgz#1e8501c8162ebdb72dcdc84de561052e06a34684"
+  integrity sha512-Zyl9Tw638x08LDew22YtxdYiUGxn+quzpR3ySIS4Nccv6yAiO5j1Yko9IEPNpj/aBZf71xtD/6hYXsgZ2ye3ew==
 
 bottleneck@^2.18.1:
   version "2.19.5"
@@ -4518,6 +4518,13 @@ jsesc@~0.5.0:
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
   integrity sha1-597mbjXW/Bb3EP6R1c9p9w8IkR0=
 
+json-as@^1.2.6:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/json-as/-/json-as-1.5.0.tgz#dcb5bfa6e02e56393b47bb3e3eb3120a6d442488"
+  integrity sha512-5p4N1D7iI0DMVGmD9yIpXBAlVHPkpqzUETpTMt4w0PwJUdixIH6ebl7+RxdVcJHJ/GoNO4nknsc9xO1LQU0xeQ==
+  dependencies:
+    xjb-as "^0.1.0"
+
 json-parse-better-errors@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
@@ -4817,10 +4824,10 @@ lodash@^4.17.12, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
-long@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/long/-/long-4.0.0.tgz#9a7b71cfb7d361a194ea555241c92f7468d5bf28"
-  integrity sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==
+long@^5.2.4:
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/long/-/long-5.3.2.tgz#1d84463095999262d7d7b7f8bfd4a8cc55167f83"
+  integrity sha512-mNAgZ1GmyNhD7AuqnTG3/VQ26o760+ZYBPKjPvugO8+nLbYfX6TVpJPseBvopbdY+qpZ/lKUnmEc1LeZYS3QAA==
 
 longest@^2.0.1:
   version "2.0.1"
@@ -6743,6 +6750,11 @@ ts-mixer@^5.1.0:
   resolved "https://registry.yarnpkg.com/ts-mixer/-/ts-mixer-5.4.1.tgz#b90db9ced48531aa17ce9184a2890d1e3c99b1e5"
   integrity sha512-Zo9HgPCtNouDgJ+LGtrzVOjSg8+7WGQktIKLwAfaNrlOK1mWGlz1ejsAF/YqUEqAGjUTeB5fEg8gH9Aui6w9xA==
 
+ts-mixer@^6.0.2:
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/ts-mixer/-/ts-mixer-6.0.4.tgz#1da39ceabc09d947a82140d9f09db0f84919ca28"
+  integrity sha512-ufKpbmrugz5Aou4wcr5Wc1UUFWOLhq+Fm6qa6P0w0K5Qw2yhaUoiWszhCVuNQyNwrlGiscHOmqYoAox1PtvgjA==
+
 ts-node@^10.7.0:
   version "10.7.0"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.7.0.tgz#35d503d0fab3e2baa672a0e94f4b40653c2463f5"
@@ -6971,6 +6983,14 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
+visitor-as@^0.11.4:
+  version "0.11.4"
+  resolved "https://registry.yarnpkg.com/visitor-as/-/visitor-as-0.11.4.tgz#7b2d7b7ac8be86d4741796aa0630af5e471a4744"
+  integrity sha512-uih7AooY2V3LhzobjLqyEQzhYYBGeq0y/rZk295foM1Ko498f24NNXBDyM1SgzcLMFCAT/fpmSRco1BpTIdKNQ==
+  dependencies:
+    lodash.clonedeep "^4.5.0"
+    ts-mixer "^6.0.2"
+
 visitor-as@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/visitor-as/-/visitor-as-0.5.0.tgz#c0911c028df3a31218c9091ffdae172b507d536b"
@@ -7125,6 +7145,11 @@ ws@^7.4.6:
   version "7.5.7"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.7.tgz#9e0ac77ee50af70d58326ecff7e85eb3fa375e67"
   integrity sha512-KMvVuFzpKBuiIXW3E4u3mySRO2/mCHSyZDJQM5NQ9Q9KHWHWh0NHgfbRMLLrceUK5qAL4ytALJbpRMjixFZh8A==
+
+xjb-as@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/xjb-as/-/xjb-as-0.1.0.tgz#cf9678158ac299b8374467cf49d81d256b2219ad"
+  integrity sha512-Q73gSq7cfWbsDY/RcJHTa2QU9nb6bktp4iqCxUxNg8VhK+JQd3wcwIY0Nwuo6gTtAsBBpEPMf4zfUXbATHdwhw==
 
 xml-name-validator@^3.0.0:
   version "3.0.0"

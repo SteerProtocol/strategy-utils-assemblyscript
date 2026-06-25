@@ -1,14 +1,3 @@
-const fs = require("fs");
-import * as AsBind from "as-bind/dist/as-bind.cjs.js";
-
-const imports = {
-  console: { // File which you are injecting
-    log(strPtr) {
-      console.log(strPtr)
-    }
-  }
-};
-
-const asBindInstance = AsBind.instantiateSync(fs.readFileSync(__dirname + "/build/optimized.wasm"), imports)
-
-module.exports = asBindInstance.exports;
+throw new Error(
+  '@steerprotocol/strategy-utils is an AssemblyScript source package. Import from assembly/index.ts in AssemblyScript strategies.',
+);

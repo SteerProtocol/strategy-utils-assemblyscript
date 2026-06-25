@@ -1,3 +1,10 @@
+## [1.2.0](https://github.com/SteerProtocol/strategy-utils-assemblyscript/compare/v1.1.1...v1.2.0) (2026-06-25)
+
+
+### Features
+
+* **panoptic:** add AssemblyScript runtime adapter types ([2b5f46c](https://github.com/SteerProtocol/strategy-utils-assemblyscript/commit/2b5f46c5148c081a2317e7730fafeca0cb0d3489))
+
 ### [1.1.1](https://github.com/SteerProtocol/strategy-utils-assemblyscript/compare/v1.1.0...v1.1.1) (2022-07-26)
 
 
